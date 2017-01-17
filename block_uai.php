@@ -76,7 +76,7 @@ class block_uai extends block_base {
     protected function emarking() {
     	global $CFG, $PAGE;
     	
-    	if($CFG->block_uai_local_modules && !in_array('emarking',explode(',',$CFG->block_uai_local_modules))) {
+    	if(!get_config("block_uai", "emarking")) {
     		return false;
     	}
     	
@@ -113,6 +113,10 @@ class block_uai extends block_base {
     
     protected function reserva_salas() {
     	global $USER, $CFG, $DB, $COURSE, $PAGE;
+    	
+    	if(!get_config("block_uai", "reservasalas")) {
+    		return false;
+    	}
     	
     	$context = context_system::instance();
     	$root = array();
@@ -209,7 +213,7 @@ class block_uai extends block_base {
     protected function paperattendance() {
     	global $COURSE, $PAGE, $CFG;
     	
-    	if($CFG->block_uai_local_modules && !in_array('paperattendance',explode(',',$CFG->block_uai_local_modules))) {
+    	if(!get_config("block_uai", "paperattendance")) {
     		return false;
     	}
     	
@@ -250,6 +254,10 @@ class block_uai extends block_base {
     
     protected function syncomega() {
     	$root = array();
+    	var_dump(get_config("block_uai", "sync"));
+    	if(!get_config("block_uai", "sync")) {
+    		return false;
+    	}
     	
     	$root["string"] = get_string('syncomega', 'block_uai');
     	
