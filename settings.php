@@ -5,7 +5,7 @@ defined('MOODLE_INTERNAL') || die;
 if ($ADMIN->fulltree) {
 	// Links a mostrar en bloque UAI
 	$settings->add(new admin_setting_configmulticheckbox(
-			'block_uaiblock_local_modules',
+			'block_uai_local_modules',
 			'Módulos locales activos',
 			'Lista de módulos locales activos.',
 			array(
