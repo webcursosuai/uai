@@ -76,9 +76,9 @@ class block_uai extends block_base {
     protected function emarking() {
     	global $CFG, $PAGE;
     	
-    	if(!get_config("block_uai", "emarking")) {
+    	/*if(!get_config("block_uai", "emarking")) {
     		return false;
-    	}
+    	}*/
     	
     	$context = $PAGE->context;
     	$course = $PAGE->course;
@@ -111,13 +111,52 @@ class block_uai extends block_base {
     	return $root;
     }
     
-    protected function reserva_salas() {
-    	global $USER, $CFG, $DB, $COURSE, $PAGE;
+    protected function print_orders() {
+    	global $DB, $USER, $CFG, $COURSE, $PAGE;
     	
-    	if(!get_config("block_uai", "reservasalas")) {
+    	if(!has_capability('mod/emarking:printordersview', $PAGE->context)) {
     		return false;
     	}
     	
+    	$categoryid = 0;
+    	if($COURSE && $COURSE->id > 1) {
+    		$categoryid = $COURSE->category;
+    	} elseif ($PAGE->context instanceof context_coursecat) {
+    		$categoryid = intval($PAGE->context->__get('instanceid'));
+    	}
+    	
+    	if(!$categoryid) {
+    		return false;
+    	}
+    	
+    	$root = array();
+    	$root["string"] = get_string('printorders', 'mod_emarking');
+    	
+    	$root["printorders"] = array();
+    	$root["printorders"]["string"] = get_string('printorders', 'mod_emarking');
+    	$root["printorders"]["url"] =	 new moodle_url("/mod/emarking/print/printorders.php", array("category"=>$categoryid));
+    	$root["printorders"]["icon"] =	 't/print';
+    	
+    	$root["costreport"] = array();
+    	$root["costreport"]["string"] = get_string('costreport', 'mod_emarking');
+    	$root["costreport"]["url"] =	new moodle_url("/mod/emarking/reports/costcenter.php", array("category"=>$categoryid));
+    	$root["costreport"]["icon"] =	't/ranges';
+    	
+    	$root["costsettings"] = array();
+    	$root["costsettings"]["string"] = get_string('costsettings', 'mod_emarking');
+    	$root["costsettings"]["url"] =	  new moodle_url("/mod/emarking/reports/costconfig.php", array("category"=>$categoryid));
+    	$root["costsettings"]["icon"] =	  'a/setting';
+    	
+    	return $root;
+    }
+    
+    protected function reserva_salas() {
+    	global $USER, $CFG, $DB, $COURSE, $PAGE;
+    	/*
+    	if(!get_config("block_uai", "reservasalas")) {
+    		return false;
+    	}
+    	*/
     	$context = context_system::instance();
     	$root = array();
     	
@@ -212,11 +251,11 @@ class block_uai extends block_base {
     
     protected function paperattendance() {
     	global $COURSE, $PAGE, $CFG;
-    	
+    	/*
     	if(!get_config("block_uai", "paperattendance")) {
     		return false;
     	}
-    	
+    	*/
     	$categoryid = optional_param("categoryid", 1, PARAM_INT);
     	$context = $PAGE->context;
     	
@@ -252,13 +291,44 @@ class block_uai extends block_base {
     	return $root;
     }
     
-    protected function syncomega() {
+    protected function facebook() {
+    	global $USER, $CFG, $DB;
+    	
     	$root = array();
-    	var_dump(get_config("block_uai", "sync"));
+    	$root["string"] = get_string('facebook', 'block_uai');
+    	
+    	$exist = $DB->get_record('facebook_user', array('moodleid' => $USER->id, 'status' => '1'));
+    	if($exist == false) {
+    		$root["connect"] = array();
+    		$root["connect"]["string"] = get_string('connect', 'block_uai');
+    		$root["connect"]["url"] =	 new moodle_url("/local/facebook/connect.php");
+    		$root["connect"]["icon"] =	 'i/mnethost';
+    	} else {
+    		$root["info"] = array();
+    		$root["info"]["string"] = get_string('info', 'block_uai');
+    		$root["info"]["url"] =	  new moodle_url("/local/facebook/connect.php");
+    		$root["info"]["icon"] =	  'i/info';
+    		
+    		$root["app"] = array();
+    		$root["app"]["string"] = get_string('goapp', 'block_uai');
+    		$root["app"]["url"] =	 $CFG->fbk_url;
+    		$root["app"]["icon"] =	 't/right';
+    	}
+    	return $root;
+    }
+    
+    protected function syncomega() {
+    	/*
     	if(!get_config("block_uai", "sync")) {
+    		return false;
+    	}*/
+    	
+    	$context = context_system::instance();
+    	if(!has_capability('local/sync:history', $context)) {
     		return false;
     	}
     	
+    	$root = array();
     	$root["string"] = get_string('syncomega', 'block_uai');
     	
     	$root["create"] = array();
@@ -293,8 +363,16 @@ class block_uai extends block_base {
     		$menu[] = $emarking;
     	}
     	
+    	if($printorders = $this->print_orders()) {
+    		$menu[] = $printorders;
+    	}
+    	
     	if($reservasalas = $this->reserva_salas()) {
     		$menu[] = $reservasalas;
+    	}
+    	
+    	if($facebook = $this->facebook()) {
+    		$menu[] = $facebook;
     	}
     	
     	if($syncomega = $this->syncomega()) {
@@ -407,7 +485,7 @@ class block_uai extends block_base {
     		$pluginhtml = html_writer::tag("ul", $elementhtml, array("class" => "nav nav-list collapse", "id" => $id));
     		
     		// Then make it part of the plugins list
-    		$pluginspan = html_writer::empty_tag("img", array("src" => $plugin["icon"])).html_writer::tag("span", $plugin["string"]);
+    		$pluginspan = html_writer::tag("span", $plugin["string"]);
     		$pluginspan = html_writer::tag("li", $pluginspan, array(
     				"class" => "nav-header", 
     				"data-toggle" => "collapse", 
