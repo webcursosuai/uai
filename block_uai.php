@@ -40,6 +40,9 @@ class block_uai extends block_base {
     	$this->blockname = get_class($this);
     	$this->title = "UAI";
     }
+    function has_config() {
+    	return true;
+    }
     
     function instance_allow_multiple() {
     	return false;
@@ -76,9 +79,9 @@ class block_uai extends block_base {
     protected function emarking() {
     	global $CFG, $PAGE;
     	
-    	/*if(!get_config("block_uai", "emarking")) {
-    		return false;
-    	}*/
+    	if($CFG->block_uai_local_modules && !in_array('emarking',explode(',',$CFG->block_uai_local_modules))) {
+			return false;
+		}
     	
     	$context = $PAGE->context;
     	$course = $PAGE->course;
@@ -113,6 +116,10 @@ class block_uai extends block_base {
     
     protected function print_orders() {
     	global $DB, $USER, $CFG, $COURSE, $PAGE;
+    	
+    	if($CFG->block_uai_local_modules && !in_array('emarking',explode(',',$CFG->block_uai_local_modules))) {
+    		return false;
+    	}
     	
     	if(!has_capability('mod/emarking:printordersview', $PAGE->context)) {
     		return false;
@@ -152,11 +159,11 @@ class block_uai extends block_base {
     
     protected function reserva_salas() {
     	global $USER, $CFG, $DB, $COURSE, $PAGE;
-    	/*
-    	if(!get_config("block_uai", "reservasalas")) {
+    	
+    	if($CFG->block_uai_local_modules && !in_array('reservasalas',explode(',',$CFG->block_uai_local_modules))) {
     		return false;
     	}
-    	*/
+    	
     	$context = context_system::instance();
     	$root = array();
     	
@@ -251,11 +258,11 @@ class block_uai extends block_base {
     
     protected function paperattendance() {
     	global $COURSE, $PAGE, $CFG;
-    	/*
-    	if(!get_config("block_uai", "paperattendance")) {
+    	
+    	if($CFG->block_uai_local_modules && !in_array('paperattendance',explode(',',$CFG->block_uai_local_modules))) {
     		return false;
     	}
-    	*/
+    	
     	$categoryid = optional_param("categoryid", 1, PARAM_INT);
     	$context = $PAGE->context;
     	
@@ -294,6 +301,10 @@ class block_uai extends block_base {
     protected function facebook() {
     	global $USER, $CFG, $DB;
     	
+    	if($CFG->block_uai_local_modules && !in_array('facebook',explode(',',$CFG->block_uai_local_modules))) {
+    		return false;
+    	}
+    	
     	$root = array();
     	$root["string"] = get_string('facebook', 'block_uai');
     	
@@ -318,10 +329,11 @@ class block_uai extends block_base {
     }
     
     protected function syncomega() {
-    	/*
-    	if(!get_config("block_uai", "sync")) {
+    	global $CFG;
+    	
+    	if($CFG->block_uai_local_modules && !in_array('syncomega',explode(',',$CFG->block_uai_local_modules))) {
     		return false;
-    	}*/
+    	}
     	
     	$context = context_system::instance();
     	if(!has_capability('local/sync:history', $context)) {
