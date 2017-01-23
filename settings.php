@@ -48,4 +48,15 @@ if ($ADMIN->fulltree) {
 					'syncomega'=>'local/sync'
 			)
 	));
+	
+	$settings->add(new admin_setting_configselect(
+			'block_uai_version', 
+			"Versión de bloque",
+            "La versión del bloque debe coincidir con la versión de Moodle utilizada. De lo contrario, puede mostrarse mal.", 
+			31,
+			array(
+					30 => "3.0 o anterior",
+					31 => "3.1 o superior"
+			)
+	));
 }
