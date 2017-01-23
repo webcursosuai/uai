@@ -78,38 +78,45 @@ class block_uai extends block_base {
     
     function emarking(){ // desplegamos el contenido de eMarking
     	global $COURSE, $CFG, $PAGE;
+    	
     	if($CFG->block_uai_local_modules && !in_array('emarking',explode(',',$CFG->block_uai_local_modules))) {
     		return false;
     	}
+    	
     	$context = $PAGE->context;
     	$course = $PAGE->course;
     	$courseid = $course->id;
     	if ($courseid==null || $courseid==1 || !has_capability('mod/assign:grade', $context)){ //checkeamos si tenemos la capacidad
     		return false;
     	}
+    	
     	$nodonewprintorder = navigation_node::create(
     			get_string('blocknewprintorder', 'block_uai'),
     			new moodle_url("/course/modedit.php", array("sr"=>0,"add"=>"emarking","section"=>0,"course"=>$courseid)), //url para enlazar y ver información de facebook
     			navigation_node::TYPE_CUSTOM,
-    			null, null, new pix_icon('t/portfolioadd', get_string('newprintorder', 'mod_emarking')));
+    			null, null, new pix_icon('t/portfolioadd', get_string('newprintorder', 'mod_emarking'))
+    	);
     
     	$nodomyexams = navigation_node::create(
     			get_string('blockmyexams', 'block_uai'),
     			new moodle_url("/mod/emarking/print/exams.php", array("course"=>$courseid)), //url para enlazar y ver información de facebook
     			navigation_node::TYPE_CUSTOM,
-    			null, null, new pix_icon('a/view_list_active', get_string('myexams', 'mod_emarking')));
+    			null, null, new pix_icon('a/view_list_active', get_string('myexams', 'mod_emarking'))
+    	);
     
     	$nodocycle = navigation_node::create(
     			get_string('cycle', 'block_uai'),
     			new moodle_url("/mod/emarking/reports/cycle.php", array("course"=>$courseid)), //url para enlazar y ver información de facebook
     			navigation_node::TYPE_CUSTOM,
-    			null, null, new pix_icon('i/course', get_string('cycle', 'mod_emarking')));
+    			null, null, new pix_icon('i/course', get_string('cycle', 'mod_emarking'))
+    	);
+    	
     	$rootnode = navigation_node::create(get_string('blockexams', 'block_uai'));
     	$rootnode->add_node($nodonewprintorder);
     	$rootnode->add_node($nodomyexams);
     	$rootnode->add_node($nodocycle);
+    	
     	return $rootnode;
-    
     }
     
     /**
@@ -123,6 +130,7 @@ class block_uai extends block_base {
     	if($CFG->block_uai_local_modules && !in_array('reportes',explode(',',$CFG->block_uai_local_modules))) {
     		return false;
     	}
+    	
     	$course = $PAGE->course;
     	if(!$course || !has_capability('local/reportes:view', $PAGE->context) || $course->id <= 1)
     		return false;
@@ -137,148 +145,177 @@ class block_uai extends block_base {
     
     	return $rootnode;
     }
+    
     function reserva_salas(){ //desplegamos el contenido de reserva de salas
     	global $USER, $CFG, $DB, $COURSE, $PAGE;
     	if($CFG->block_uai_local_modules
     			&& !in_array('reservasalas',explode(',',$CFG->block_uai_local_modules))) {
-    				return false;
-    			}
-    			$nodosedes = navigation_node::create(
-    					get_string('ajsedes', 'block_uai'),
-    					new moodle_url("/local/reservasalas/sedes.php"),
-    					navigation_node::TYPE_CUSTOM, null, null,
-    					new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para ver sedes
-    					$nodosalas = navigation_node::create(
-    							get_string('ajmodversal', 'block_uai'),
-    							new moodle_url("/local/reservasalas/salas.php"),
-    							navigation_node::TYPE_CUSTOM, null, null,
-    							new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para ver salas creadas
-    							$nodoedificios = navigation_node::create(
-    									get_string('ajmodvered', 'block_uai'),
-    									new moodle_url("/local/reservasalas/edificios.php"),
-    									navigation_node::TYPE_CUSTOM, null, null,
-    									new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para ver edificios creados
-    									/*
-    									$nodohistorial = navigation_node::create(
-    									get_string('historial', 'block_uai'),
-    									new moodle_url("/local/reservasalas/historial.php"),
-    									navigation_node::TYPE_CUSTOM, null, null,
-    									new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para ver el historial de todas las reservas
-    									*/
-    									$nodoreservar = navigation_node::create(
-    											get_string('reservar', 'block_uai'),
-    											new moodle_url("/local/reservasalas/reservar.php"),
-    											navigation_node::TYPE_CUSTOM, null, null,
-    											new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para reservar salas
-    											$nodomisreservas = navigation_node::create(
-    													get_string('misreservas', 'block_uai'),
-    													new moodle_url("/local/reservasalas/misreservas.php"),
-    													navigation_node::TYPE_CUSTOM, null, null,
-    													new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para ver las reservas de un usuario
-    													$nodobloquear = navigation_node::create(
-    															get_string('bloquear', 'block_uai'),
-    															new moodle_url("/local/reservasalas/bloquear.php"),
-    															navigation_node::TYPE_CUSTOM, null, null,
-    															new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para bloquear usuarios
-    															$nododesbloquear = navigation_node::create(
-    																	get_string('desbloq', 'block_uai'),
-    																	new moodle_url("/local/reservasalas/desbloquear.php"),
-    																	navigation_node::TYPE_CUSTOM, null, null,
-    																	new pix_icon('i/report', get_string('ajsedes', 'block_uai'))); //url para desbloquar usuarios
-    																	/*
-    																	$nodoestadisticas = navigation_node::create(
-    																	get_string('statistics', 'block_uai'),//'Estadísticas',
-    																	new moodle_url("/local/reservasalas/estadisticas.php"),
-    																	navigation_node::TYPE_CUSTOM, null, null,
-    																	new pix_icon('i/report', get_string('ajsedes', 'block_uai')));
-    																	*/
-    																	$nodoreservasporusuario = navigation_node::create(
-    																			get_string('viewuserreserves', 'block_uai'),//'Ver reservas por usuario',
-    																			new moodle_url("/local/reservasalas/reservasusuarios.php"),
-    																			navigation_node::TYPE_CUSTOM, null, null,
-    																			new pix_icon('i/report', get_string('ajsedes', 'block_uai')));
-    																	$nododiagnostico = navigation_node::create(
-    																			get_string('diagnostic', 'block_uai'),//'Diagnóstico',
-    																			new moodle_url("/local/reservasalas/diagnostico.php"),
-    																			navigation_node::TYPE_CUSTOM, null, null,
-    																			new pix_icon('i/report', get_string('ajsedes', 'block_uai')));
-    																	$nodoresources = navigation_node::create(
-    																			get_string('urlresources', 'block_uai'),
-    																			new moodle_url("/local/reservasalas/resources.php"),
-    																			navigation_node::TYPE_CUSTOM, null, null,
-    																			new pix_icon('i/report', get_string('ajsedes', 'block_uai')));
-    																	$nodoupload = navigation_node::create(
-    																			get_string('upload', 'block_uai'),//'upload',
-    																			new moodle_url("/local/reservasalas/upload.php"),
-    																			navigation_node::TYPE_CUSTOM, null, null,
-    																			new pix_icon('i/report', get_string('ajsedes', 'block_uai')));
-    																	$nodosearch = navigation_node::create(
-    																			get_string('search', 'block_uai'),
-    																			new moodle_url("/local/reservasalas/search.php"),
-    																			navigation_node::TYPE_CUSTOM, null, null,
-    																			new pix_icon('i/report', get_string('ajsedes', 'block_uai')));
+			return false;
+		}
+		$nodosedes = navigation_node::create(
+				get_string('ajsedes', 'block_uai'),
+				new moodle_url("/local/reservasalas/sedes.php"),
+				navigation_node::TYPE_CUSTOM, null, null,
+				new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+		); //url para ver sedes
+		
+		$nodosalas = navigation_node::create(
+    			get_string('ajmodversal', 'block_uai'),
+    			new moodle_url("/local/reservasalas/salas.php"),
+				navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+		); //url para ver salas creadas
+		
+    	$nodoedificios = navigation_node::create(
+    			get_string('ajmodvered', 'block_uai'),
+    			new moodle_url("/local/reservasalas/edificios.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	); //url para ver edificios creados
+    	
+    	/*
+    	$nodohistorial = navigation_node::create(
+    			get_string('historial', 'block_uai'),
+    			new moodle_url("/local/reservasalas/historial.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	); //url para ver el historial de todas las reservas
+    	*/
+    	$nodoreservar = navigation_node::create(
+    			get_string('reservar', 'block_uai'),
+    			new moodle_url("/local/reservasalas/reservar.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	); //url para reservar salas
+    	
+    	$nodomisreservas = navigation_node::create(
+    			get_string('misreservas', 'block_uai'),
+    			new moodle_url("/local/reservasalas/misreservas.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	); //url para ver las reservas de un usuario
+    	
+    	$nodobloquear = navigation_node::create(
+    			get_string('bloquear', 'block_uai'),
+    			new moodle_url("/local/reservasalas/bloquear.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	); //url para bloquear usuarios
+    	
+    	$nododesbloquear = navigation_node::create(
+    			get_string('desbloq', 'block_uai'),
+    			new moodle_url("/local/reservasalas/desbloquear.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	); //url para desbloquar usuarios
+    	
+    	/*
+    	$nodoestadisticas = navigation_node::create(
+    			get_string('statistics', 'block_uai'),//'Estadísticas',
+    			new moodle_url("/local/reservasalas/estadisticas.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	);
+    	*/
+    	
+    	$nodoreservasporusuario = navigation_node::create(
+    			get_string('viewuserreserves', 'block_uai'),//'Ver reservas por usuario',
+    			new moodle_url("/local/reservasalas/reservasusuarios.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	);
+    	
+    	$nododiagnostico = navigation_node::create(
+    			get_string('diagnostic', 'block_uai'),//'Diagnóstico',
+    			new moodle_url("/local/reservasalas/diagnostico.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	);
+    	
+    	$nodoresources = navigation_node::create(
+    			get_string('urlresources', 'block_uai'),
+    			new moodle_url("/local/reservasalas/resources.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	);
+    	
+    	$nodoupload = navigation_node::create(
+    			get_string('upload', 'block_uai'),//'upload',
+    			new moodle_url("/local/reservasalas/upload.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	);
+    	
+    	$nodosearch = navigation_node::create(
+    			get_string('search', 'block_uai'),
+    			new moodle_url("/local/reservasalas/search.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/report', get_string('ajsedes', 'block_uai'))
+    	);
     
-    																	$context = context_system::instance();
+    	$context = context_system::instance();
+    	
+    	$rootnode = navigation_node::create(get_string('reservasal', 'block_uai'));
+    	$rootnode->add_node($nodoreservar);
+    	
     
-    																	$rootnode = navigation_node::create(get_string('reservasal', 'block_uai'));
-    																	$rootnode->add_node($nodoreservar);
+    	if(has_capability('local/reservasalas:advancesearch', $context)) {
+    		$rootnode->add_node($nodosearch);
+    	}
     
+    	if(has_capability('local/reservasalas:administration', $context)||
+    			has_capability('local/reservasalas:bockinginfo', $context)||
+    			has_capability('local/reservasalas:blocking', $context)) {
+    		$nodesettings = navigation_node::create(
+    				get_string('ajustesrs', 'block_uai'),
+    				null,
+    				navigation_node::TYPE_UNKNOWN
+    		);
     
-    																	if(has_capability('local/reservasalas:advancesearch', $context)) {
-    																		$rootnode->add_node($nodosearch);
-    																	}
+    		$rootnode->add_node($nodesettings);
+    	}
     
-    																	if(has_capability('local/reservasalas:administration', $context)||
-    																			has_capability('local/reservasalas:bockinginfo', $context)||
-    																			has_capability('local/reservasalas:blocking', $context)) {
-    																				$nodesettings = navigation_node::create(
-    																						get_string('ajustesrs', 'block_uai'),
-    																						null,
-    																						navigation_node::TYPE_UNKNOWN
-    																						);
+    	if(has_capability('local/reservasalas:administration', $context)) {
+    		$nodesettings->add_node($nodosalas);
+    		$nodesettings->add_node($nodoedificios);
+    		$nodesettings->add_node($nodosedes);
+    		$nodesettings->add_node($nodoresources);
+    	}
     
-    																				$rootnode->add_node($nodesettings);
-    																			}
+    	if(has_capability('local/reservasalas:bockinginfo', $context)){ //revisamos la capacidad del usuario
+    		//administrador
+    		//$nodesettings->add_node($nodohistorial);
+    		$nodesettings->add_node($nodoreservasporusuario);
+    		//$nodesettings->add_node($nodoestadisticas);
+    		$nodesettings->add_node($nododiagnostico);
+    	}
     
-    																			if(has_capability('local/reservasalas:administration', $context)) {
-    																				$nodesettings->add_node($nodosalas);
-    																				$nodesettings->add_node($nodoedificios);
-    																				$nodesettings->add_node($nodosedes);
-    																				$nodesettings->add_node($nodoresources);
-    																			}
+    	if(has_capability('local/reservasalas:blocking', $context)){
+    		$nodeusuarios = navigation_node::create(
+    				get_string('usuarios', 'block_uai'),
+    				null,
+    				navigation_node::TYPE_UNKNOWN
+    		);
     
-    																			if(has_capability('local/reservasalas:bockinginfo', $context)){ //revisamos la capacidad del usuario
-    																				//administrador
-    																				//$nodesettings->add_node($nodohistorial);
-    																				$nodesettings->add_node($nodoreservasporusuario);
-    																				//$nodesettings->add_node($nodoestadisticas);
-    																				$nodesettings->add_node($nododiagnostico);
-    																			}
+    		$nodeusuarios->add_node($nododesbloquear);
+    		$nodeusuarios->add_node($nodobloquear);
+    		$rootnode->add_node($nodeusuarios);
+    	}
+    	
+    	if(isset($CFG->local_uai_debug) && $CFG->local_uai_debug==1) {
+    		if(has_capability('local/reservasalas:upload', $context)){
+    			$rootnode->add_node($nodoupload);
+    		}
+    	}
     
-    																			if(has_capability('local/reservasalas:blocking', $context)){
-    																				$nodeusuarios = navigation_node::create(
-    																						get_string('usuarios', 'block_uai'),
-    																						null,
-    																						navigation_node::TYPE_UNKNOWN
-    																						);
+    	//alumnos
+    	if(!has_capability('local/reservasalas:advancesearch', $context)) {
+    		$rootnode->add_node($nodomisreservas);
+    	}
     
-    																				$nodeusuarios->add_node($nododesbloquear);
-    																				$nodeusuarios->add_node($nodobloquear);
-    																				$rootnode->add_node($nodeusuarios);
-    																			}
-    																			if(isset($CFG->local_uai_debug) && $CFG->local_uai_debug==1) {
-    																				if(has_capability('local/reservasalas:upload', $context)){
-    																					$rootnode->add_node($nodoupload);
-    																				}
-    																			}
-    
-    																			//alumnos
-    																			if(!has_capability('local/reservasalas:advancesearch', $context)) {
-    																				$rootnode->add_node($nodomisreservas);
-    																			}
-    
-    																			return $rootnode;
+    	return $rootnode;
     }
+    
     function print_orders(){ //desplegamos las ordenes de impresion de evaluaciones
     	global $DB, $USER, $CFG, $COURSE, $PAGE;
     
@@ -289,47 +326,52 @@ class block_uai extends block_base {
     	if(!has_capability('mod/emarking:printordersview', $PAGE->context))
     		return false;
     
-    		$categoryid = 0;
-    		if($COURSE && $COURSE->id > 1) {
-    			$categoryid = $COURSE->category;
-    		} elseif ($PAGE->context instanceof context_coursecat) {
-    			$categoryid = intval($PAGE->context->__get('instanceid'));
-    		}
+    	$categoryid = 0;
+    	if($COURSE && $COURSE->id > 1) {
+    		$categoryid = $COURSE->category;
+    	} elseif ($PAGE->context instanceof context_coursecat) {
+    		$categoryid = intval($PAGE->context->__get('instanceid'));
+    	}
     
-    		if(!$categoryid) {
-    			return false;
-    		}
+    	if(!$categoryid) {
+    		return false;
+    	}
     
-    		$rootnode = navigation_node::create(get_string('printorders', 'mod_emarking'));
+    	$rootnode = navigation_node::create(get_string('printorders', 'mod_emarking'));
     
-    		$url = new moodle_url("/mod/emarking/print/printorders.php", array("category"=>$categoryid));
-    		$nodeprintorders = navigation_node::create(
-    				get_string('printorders', 'mod_emarking'),
-    				$url,
-    				navigation_node::TYPE_CUSTOM,
-    				null, null, new pix_icon('t/print', get_string('printorders', 'mod_emarking')));
+    	$url = new moodle_url("/mod/emarking/print/printorders.php", array("category"=>$categoryid));
+    	$nodeprintorders = navigation_node::create(
+    			get_string('printorders', 'mod_emarking'),
+    			$url,
+    			navigation_node::TYPE_CUSTOM,
+    			null, null, new pix_icon('t/print', get_string('printorders', 'mod_emarking'))
+    	);
     
-    		$url = new moodle_url("/mod/emarking/reports/costcenter.php", array("category"=>$categoryid));
+    	$url = new moodle_url("/mod/emarking/reports/costcenter.php", array("category"=>$categoryid));
     
-    		$nodecostreport = navigation_node::create(
-    				get_string('costreport', 'mod_emarking'),
-    				$url,
-    				navigation_node::TYPE_CUSTOM,
-    				null, null, new pix_icon('t/ranges', get_string('printorders', 'mod_emarking')));
+    	$nodecostreport = navigation_node::create(
+    			get_string('costreport', 'mod_emarking'),
+    			$url,
+    			navigation_node::TYPE_CUSTOM,
+    			null, null, new pix_icon('t/ranges', get_string('printorders', 'mod_emarking'))
+    	);
     
-    		$url = new moodle_url("/mod/emarking/reports/costconfig.php", array("category"=>$categoryid));
+    	$url = new moodle_url("/mod/emarking/reports/costconfig.php", array("category"=>$categoryid));
     
-    		$nodecostconfiguration = navigation_node::create(
-    				get_string('costsettings', 'mod_emarking'),
-    				$url,
-    				navigation_node::TYPE_CUSTOM,
-    				null, null, new pix_icon('a/setting', get_string('printorders', 'mod_emarking')));
-    		$rootnode->add_node($nodeprintorders);
-    		$rootnode->add_node($nodecostreport);
-    		$rootnode->add_node($nodecostconfiguration);
+    	$nodecostconfiguration = navigation_node::create(
+    			get_string('costsettings', 'mod_emarking'),
+    			$url,
+    			navigation_node::TYPE_CUSTOM,
+    			null, null, new pix_icon('a/setting', get_string('printorders', 'mod_emarking'))
+    	);
+    	
+    	$rootnode->add_node($nodeprintorders);
+    	$rootnode->add_node($nodecostreport);
+    	$rootnode->add_node($nodecostconfiguration);
     
-    		return $rootnode;
+    	return $rootnode;
     }
+    
     function facebook(){ //Show facebook content
     	global $USER, $CFG, $DB, $COURSE;
     
@@ -446,36 +488,42 @@ class block_uai extends block_base {
     function syncomega(){
     	global $CFG;
     
-    	if($CFG->block_uai_local_modules
-    			&& !in_array('syncomega',explode(',',$CFG->block_uai_local_modules))) {
-    				return false;
-    			}
-    			$nodohistorial = navigation_node::create(
-    					get_string('synchistory', 'block_uai'),
-    					new moodle_url("/local/sync/history.php"),
-    					navigation_node::TYPE_CUSTOM, null, null,
-    					new pix_icon('i/siteevent', get_string('synchistory', 'block_uai'))); //url para reservar salas;
-    					$nodocreate = navigation_node::create(
-    							get_string('synccreate', 'block_uai'),
-    							new moodle_url("/local/sync/create.php"),
-    							navigation_node::TYPE_CUSTOM, null, null,
-    							new pix_icon('e/new_document', get_string('synccreate', 'block_uai')));
-    					$nodorecord = navigation_node::create(
-    							get_string('syncrecord', 'block_uai'),
-    							new moodle_url("/local/sync/record.php"),
-    							navigation_node::TYPE_CUSTOM, null, null,
-    							new pix_icon('e/fullpage', get_string('syncrecord', 'block_uai')));
-    					$context = context_system::instance();
-    					if(has_capability('local/sync:history', $context)) {
-    						$rootnode = navigation_node::create(get_string('syncomega', 'block_uai'));
-    						$rootnode->add_node($nodocreate);
-    						$rootnode->add_node($nodorecord);
-    						$rootnode->add_node($nodohistorial);
-    						return $rootnode;
-    					}
-    					else{
-    						return false;
-    					}
+    	if($CFG->block_uai_local_modules && !in_array('syncomega',explode(',',$CFG->block_uai_local_modules))) {
+    		return false;
+    	}
+    	
+    	$nodohistorial = navigation_node::create(
+    			get_string('synchistory', 'block_uai'),
+    			new moodle_url("/local/sync/history.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('i/siteevent', get_string('synchistory', 'block_uai'))
+    	); //url para reservar salas;
+    	
+    	$nodocreate = navigation_node::create(
+    			get_string('synccreate', 'block_uai'),
+    			new moodle_url("/local/sync/create.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('e/new_document', get_string('synccreate', 'block_uai'))
+    	);
+    	
+    	$nodorecord = navigation_node::create(
+    			get_string('syncrecord', 'block_uai'),
+    			new moodle_url("/local/sync/record.php"),
+    			navigation_node::TYPE_CUSTOM, null, null,
+    			new pix_icon('e/fullpage', get_string('syncrecord', 'block_uai'))
+    	);
+    	
+    	$context = context_system::instance();
+    	
+    	if(has_capability('local/sync:history', $context)) {
+    		$rootnode = navigation_node::create(get_string('syncomega', 'block_uai'));
+    		$rootnode->add_node($nodocreate);
+    		$rootnode->add_node($nodorecord);
+    		$rootnode->add_node($nodohistorial);
+    		return $rootnode;
+    	} else {
+    		return false;
+    	}
     }
     
     protected function emarking_new() {
