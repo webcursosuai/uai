@@ -27,7 +27,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 if ($ADMIN->fulltree) {
-	/*
 	$settings->add(new admin_setting_configmulticheckbox(
 			'block_uai_local_modules',
 			'Módulos locales activos',
@@ -36,8 +35,8 @@ if ($ADMIN->fulltree) {
 					'reservasalas' => 1,
 					'facebook' => 1,
 					'emarking' => 1,
-					'reportes' => 1,
-					'paperattendance' => 0,
+					'reportes' => 0,
+					'paperattendance' => 1,
 					'syncomega' => 1
 			),
 			array(
@@ -49,56 +48,15 @@ if ($ADMIN->fulltree) {
 					'syncomega'=>'local/sync'
 			)
 	));
-	*/
 	
-	$settings->add(new admin_setting_configcheckbox(
-			'block_uai/emarking', 
-			"Emarking",
-			"Utilizar Emarking",
-			1
-	));
-	
-	$settings->add(new admin_setting_configcheckbox(
-			'block_uai/reservasalas',
-			"Reserva de Salas",
-			"Utilizar Reserva de Salas",
-			1
-			));
-	
-	$settings->add(new admin_setting_configcheckbox(
-			'block_uai/paperattendance',
-			"Asistencias en Papel",
-			"Utilizar Asistencias en Papel",
-			1
-			));
-	
-	$settings->add(new admin_setting_configcheckbox(
-			'block_uai/sync',
-			"Sincronizaciones con Omega",
-			"Utilizar Sincronizaciones con Omega",
-			1
-			));
-	/*
-	$settings->add(new admin_setting_configmulticheckbox(
-			'block_uai/local_modules',
-			'Módulos locales activos',
-			'Lista de módulos locales activos.',
+	$settings->add(new admin_setting_configselect(
+			'block_uai_version', 
+			"Versión de Moodle",
+            "La versión seleccionada debe coincidir con la versión de Moodle utilizada. De lo contrario, puede mostrarse mal o dejar de funcionar.", 
+			31,
 			array(
-					'reservasalas' => 1,
-					'facebook' => 1,
-					'emarking' => 1,
-					'reportes' => 1,
-					'paperattendance' => 0,
-					'syncomega' => 1
-			),
-			array(
-					'reservasalas'=>'local/reservasalas',
-					'facebook'=>'local/facebook',
-					'emarking'=>'local/emarking',
-					'reportes'=>'local/reportes',
-					'paperattendance'=>'local/paperattendance',
-					'syncomega'=>'local/sync'
+					30 => "3.0 o inferior",
+					31 => "3.1 o superior"
 			)
-			));
-			*/
+	));
 }
