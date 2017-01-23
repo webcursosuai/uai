@@ -800,7 +800,12 @@ class block_uai extends block_base {
     
     function get_content() {
     	global $CFG, $PAGE;
-    	// First check if we have already generated, don't waste cycles
+    	
+    	// Check if content is already generated. If so, doesn't do it again
+    	if ($this->content !== null) {
+    		return $this->content;
+    	}
+    	
     	$PAGE->requires->jquery();
     	$PAGE->requires->jquery_plugin ( 'ui' );
     	$PAGE->requires->jquery_plugin ( 'ui-css' );
