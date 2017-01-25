@@ -48,4 +48,11 @@ if ($ADMIN->fulltree) {
 					'syncomega'=>'local/sync'
 			)
 	));
+	
+	$settings->add(new admin_setting_configcheckbox(
+			'block_uai_icons',
+			'Iconos de bloque',
+			'Define si se muestran los íconos de cada módulo',
+			1
+	));
 }

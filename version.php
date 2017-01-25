@@ -28,6 +28,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->pluginname = "block_uai";
 $plugin->component = 'block_uai';
-$plugin->version   = '2017012401';
+$plugin->version   = '2017012403';
 $plugin->requires = 2015052300;
 

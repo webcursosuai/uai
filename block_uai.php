@@ -94,7 +94,7 @@ class block_uai extends block_base {
     	$root = array();
     	
     	$root["string"] = get_string('blockexams', 'block_uai');
-    	$root["icon"] =   $CFG->dirroot."\mod\emarking\pix\icon.png";
+    	$root["icon"] =   'emarking.png';
     	
     	$root["newprintorder"] = array();
     	$root["newprintorder"]["string"] = get_string('blocknewprintorder', 'block_uai');
@@ -138,6 +138,7 @@ class block_uai extends block_base {
     	
     	$root = array();
     	$root["string"] = get_string('printorders', 'mod_emarking');
+    	$root["icon"] =   'printorders.png';
     	
     	$root["printorders"] = array();
     	$root["printorders"]["string"] = get_string('printorders', 'mod_emarking');
@@ -168,6 +169,7 @@ class block_uai extends block_base {
     	$root = array();
     	
     	$root["string"] = get_string('reservasal', 'block_uai');
+    	$root["icon"] =   'rooms.png';
     	
     	$root["book"] = array();
     	$root["book"]["string"] = get_string('reservar', 'block_uai');
@@ -307,6 +309,7 @@ class block_uai extends block_base {
     	}
     	
     	$root["string"] = get_string('paperattendance', 'block_uai');
+    	$root["icon"] =   'attendance.png';
     	
     	return $root;
     }
@@ -320,6 +323,7 @@ class block_uai extends block_base {
     	
     	$root = array();
     	$root["string"] = get_string('facebook', 'block_uai');
+    	$root["icon"] =   'facebook.png';
     	
     	$exist = $DB->get_record('facebook_user', array('moodleid' => $USER->id, 'status' => '1'));
     	if($exist == false) {
@@ -355,6 +359,7 @@ class block_uai extends block_base {
     	
     	$root = array();
     	$root["string"] = get_string('syncomega', 'block_uai');
+    	$root["icon"] =   'omega.png';
     	
     	$root["create"] = array();
     	$root["create"]["string"] = get_string('synccreate', 'block_uai');
@@ -388,6 +393,7 @@ class block_uai extends block_base {
     	
     	$root = array();
     	$root["string"] = "Dashboard";
+    	$root["icon"] =   'emarking.png';
     	
     	$root["dashboard"]["string"] = "Dashboard";
     	$root["dashboard"]["url"] = new moodle_url('/local/dashboard/frontpage.php');
@@ -402,6 +408,11 @@ class block_uai extends block_base {
     	// Check if content is already generated. If so, doesn't do it again
     	if ($this->content !== null) {
     		return $this->content;
+    	}
+    	
+    	// Check if an user is logged in. Block doesn't render if not.
+    	if (!isloggedin()) {
+    		return false;
     	}
     	
     	$PAGE->requires->jquery();
@@ -448,7 +459,7 @@ class block_uai extends block_base {
      * @return html string to be inserted directly into the block
      */
     protected function block_uai_renderer($plugins) {
-    	global $OUTPUT;
+    	global $OUTPUT, $CFG;
     	$content = array();
     	
     	$id = 0;
@@ -507,7 +518,7 @@ class block_uai extends block_base {
     						$usersettingsspan = html_writer::tag("li", $usersettingsspan, array(
     								"data-toggle" => "collapse",
     								"data-target" => "#us".$id,
-    								"style" => "cursor: pointer; padding-top: 0px !important; padding-bottom: 0px !important;"
+    								"style" => "cursor: pointer;"
     						));
     							
     						$usersettingshtml = html_writer::tag("li", $usersettingshtml);
@@ -534,10 +545,19 @@ class block_uai extends block_base {
     		}
     		
     		// Get all the list components above in one collapsable list delimeter ("ul" tag)
-    		$pluginhtml = html_writer::tag("ul", $elementhtml, array("class" => "nav nav-list collapse", "id" => $id));
+    		$pluginhtml = html_writer::tag("ul", $elementhtml, array(
+    				"class" => "nav nav-list collapse",
+    				"id" => $id,
+    				"style" => "padding-left: 10px;"
+    		));
     		
     		// Then make it part of the plugins list
     		$pluginspan = html_writer::tag("span", $plugin["string"]);
+    		
+    		// Modules icons
+    		if($CFG->block_uai_icons == "1") {
+    			$pluginspan = html_writer::empty_tag("img", array("src" => "../blocks/uai/pix/".$plugin["icon"], "height" => "16", "width" => "16"))." ".$pluginspan;
+    		}
     		$pluginspan = html_writer::tag("li", $pluginspan, array(
     				"data-toggle" => "collapse", 
     				"data-target" => "#".$id,
