@@ -13,6 +13,7 @@ Release notes
 -------------
 
 2.0.0: Block remade completely for Moodle versions 3.1 & 3.2
+
 1.0.0: First official deploy
 
 Compatibility
