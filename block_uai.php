@@ -421,8 +421,7 @@ class block_uai extends block_base {
     	if (!isloggedin()) {
     		return false;
     	}
-    	
-    	$PAGE->requires->jquery();
+
     	$this->content = new stdClass();
     	
     	$menu = array();
@@ -579,14 +578,6 @@ class block_uai extends block_base {
     	}
     	
     	return html_writer::tag("ul", implode("", $content), array("class" => "nav nav-list"));
-    }
-    
-    protected function get_navigation() {
-
-    }
-    
-    public function html_attributes() {
-
     }
     
     public function get_aria_role() {
