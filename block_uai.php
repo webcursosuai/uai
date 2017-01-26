@@ -138,7 +138,7 @@ class block_uai extends block_base {
     	
     	$root = array();
     	$root["string"] = get_string('printorders', 'mod_emarking');
-    	$root["icon"] =   'printorders.png';
+    	$root["icon"] =   'orders.png';
     	
     	$root["printorders"] = array();
     	$root["printorders"]["string"] = get_string('printorders', 'mod_emarking');
@@ -556,7 +556,7 @@ class block_uai extends block_base {
     		
     		// Modules icons
     		if($CFG->block_uai_icons == "1") {
-    			$pluginspan = html_writer::empty_tag("img", array("src" => "../blocks/uai/pix/".$plugin["icon"], "height" => "16", "width" => "16"))." ".$pluginspan;
+    			$pluginspan = html_writer::empty_tag("img", array("src" => $CFG->wwwroot."/blocks/uai/pix/".$plugin["icon"], "height" => "16", "width" => "16"))." ".$pluginspan;
     		}
     		$pluginspan = html_writer::tag("li", $pluginspan, array(
     				"data-toggle" => "collapse", 
