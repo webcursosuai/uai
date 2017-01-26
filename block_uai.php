@@ -423,8 +423,6 @@ class block_uai extends block_base {
     	}
     	
     	$PAGE->requires->jquery();
-    	$PAGE->requires->jquery_plugin ( "ui" );
-    	$PAGE->requires->jquery_plugin ( "ui-css" );
     	$this->content = new stdClass();
     	
     	$menu = array();
