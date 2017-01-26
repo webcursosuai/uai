@@ -70,7 +70,7 @@ class block_uai extends block_base {
     			"instanceid" => $this->instance->id
     	);
     	$this->page->requires->string_for_js("viewallcourses", "moodle");
-    	$this->page->requires->js_call_amd("block_navigation/navblock", "init", $arguments);
+    	//$this->page->requires->js_call_amd("block_navigation/navblock", "init", $arguments);
     	$this->page->requires->jquery();
     	$this->page->requires->jquery_plugin ( "ui" );
     	$this->page->requires->jquery_plugin ( "ui-css" );
