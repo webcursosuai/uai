@@ -49,7 +49,7 @@ class block_uai extends block_base {
     }
     
     function applicable_formats() {
-    	return array('all' => true);
+    	return array("all" => true);
     }
     
     function instance_allow_config() {
@@ -61,25 +61,25 @@ class block_uai extends block_base {
     }
     
     function instance_can_be_docked() {
-    	return (parent::instance_can_be_docked() && (empty($this->config->enabledock) || $this->config->enabledock=='yes'));
+    	return (parent::instance_can_be_docked() && (empty($this->config->enabledock) || $this->config->enabledock=="yes"));
     }
     
     function get_required_javascript() {
     	parent::get_required_javascript();
     	$arguments = array(
-    			'instanceid' => $this->instance->id
+    			"instanceid" => $this->instance->id
     	);
-    	$this->page->requires->string_for_js('viewallcourses', 'moodle');
-    	$this->page->requires->js_call_amd('block_navigation/navblock', 'init', $arguments);
+    	$this->page->requires->string_for_js("viewallcourses", "moodle");
+    	$this->page->requires->js_call_amd("block_navigation/navblock", "init", $arguments);
     	$this->page->requires->jquery();
-    	$this->page->requires->jquery_plugin ( 'ui' );
-    	$this->page->requires->jquery_plugin ( 'ui-css' );
+    	$this->page->requires->jquery_plugin ( "ui" );
+    	$this->page->requires->jquery_plugin ( "ui-css" );
     }
     
     protected function emarking() {
     	global $CFG, $PAGE;
     	
-    	if($CFG->block_uai_local_modules && !in_array('emarking',explode(',',$CFG->block_uai_local_modules))) {
+    	if($CFG->block_uai_local_modules && !in_array("emarking",explode(",",$CFG->block_uai_local_modules))) {
 			return false;
 		}
     	
@@ -87,29 +87,29 @@ class block_uai extends block_base {
     	$course = $PAGE->course;
     	$courseid = $course->id;
     	
-    	if($courseid == null || $courseid == 1 || !has_capability('mod/assign:grade', $context)) {
+    	if($courseid == null || $courseid == 1 || !has_capability("mod/assign:grade", $context)) {
     		return false;
     	}
     	
     	$root = array();
     	
-    	$root["string"] = get_string('blockexams', 'block_uai');
-    	$root["icon"] =   'emarking.png';
+    	$root["string"] = get_string("blockexams", "block_uai");
+    	$root["icon"] =   "emarking.png";
     	
     	$root["newprintorder"] = array();
-    	$root["newprintorder"]["string"] = get_string('blocknewprintorder', 'block_uai');
+    	$root["newprintorder"]["string"] = get_string("blocknewprintorder", "block_uai");
     	$root["newprintorder"]["url"]	 = new moodle_url("/course/modedit.php", array("sr" => 0, "add" => "emarking", "section" => 0, "course" => $courseid));
-    	$root["newprintorder"]["icon"]	 = 't/portfolioadd';
+    	$root["newprintorder"]["icon"]	 = "t/portfolioadd";
     	
     	$root["myexams"] = array();
-    	$root["myexams"]["string"] = get_string('blockmyexams', 'block_uai');
+    	$root["myexams"]["string"] = get_string("blockmyexams", "block_uai");
     	$root["myexams"]["url"]	   = new moodle_url("/mod/emarking/print/exams.php", array("course" => $courseid));
-    	$root["myexams"]["icon"]   = 'a/view_list_active';
+    	$root["myexams"]["icon"]   = "a/view_list_active";
     	
     	$root["cycle"] = array();
-    	$root["cycle"]["string"] = get_string('cycle', 'block_uai');
+    	$root["cycle"]["string"] = get_string("cycle", "block_uai");
     	$root["cycle"]["url"]	 = new moodle_url("/mod/emarking/reports/cycle.php", array("course" => $courseid));
-    	$root["cycle"]["icon"]	 = 'i/course';
+    	$root["cycle"]["icon"]	 = "i/course";
     	
     	return $root;
     }
@@ -117,11 +117,11 @@ class block_uai extends block_base {
     protected function print_orders() {
     	global $DB, $USER, $CFG, $COURSE, $PAGE;
     	
-    	if($CFG->block_uai_local_modules && !in_array('emarking',explode(',',$CFG->block_uai_local_modules))) {
+    	if($CFG->block_uai_local_modules && !in_array("emarking",explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
     	
-    	if(!has_capability('mod/emarking:printordersview', $PAGE->context)) {
+    	if(!has_capability("mod/emarking:printordersview", $PAGE->context)) {
     		return false;
     	}
     	
@@ -129,7 +129,7 @@ class block_uai extends block_base {
     	if($COURSE && $COURSE->id > 1) {
     		$categoryid = $COURSE->category;
     	} elseif ($PAGE->context instanceof context_coursecat) {
-    		$categoryid = intval($PAGE->context->__get('instanceid'));
+    		$categoryid = intval($PAGE->context->__get("instanceid"));
     	}
     	
     	if(!$categoryid) {
@@ -137,23 +137,23 @@ class block_uai extends block_base {
     	}
     	
     	$root = array();
-    	$root["string"] = get_string('printorders', 'mod_emarking');
-    	$root["icon"] =   'orders.png';
+    	$root["string"] = get_string("printorders", "mod_emarking");
+    	$root["icon"] =   "orders.png";
     	
     	$root["printorders"] = array();
-    	$root["printorders"]["string"] = get_string('printorders', 'mod_emarking');
+    	$root["printorders"]["string"] = get_string("printorders", "mod_emarking");
     	$root["printorders"]["url"] =	 new moodle_url("/mod/emarking/print/printorders.php", array("category"=>$categoryid));
-    	$root["printorders"]["icon"] =	 't/print';
+    	$root["printorders"]["icon"] =	 "t/print";
     	
     	$root["costreport"] = array();
-    	$root["costreport"]["string"] = get_string('costreport', 'mod_emarking');
+    	$root["costreport"]["string"] = get_string("costreport", "mod_emarking");
     	$root["costreport"]["url"] =	new moodle_url("/mod/emarking/reports/costcenter.php", array("category"=>$categoryid));
-    	$root["costreport"]["icon"] =	't/ranges';
+    	$root["costreport"]["icon"] =	"t/ranges";
     	
     	$root["costsettings"] = array();
-    	$root["costsettings"]["string"] = get_string('costsettings', 'mod_emarking');
+    	$root["costsettings"]["string"] = get_string("costsettings", "mod_emarking");
     	$root["costsettings"]["url"] =	  new moodle_url("/mod/emarking/reports/costconfig.php", array("category"=>$categoryid));
-    	$root["costsettings"]["icon"] =	  'a/setting';
+    	$root["costsettings"]["icon"] =	  "a/setting";
     	
     	return $root;
     }
@@ -161,97 +161,97 @@ class block_uai extends block_base {
     protected function reserva_salas() {
     	global $USER, $CFG, $DB, $COURSE, $PAGE;
     	
-    	if($CFG->block_uai_local_modules && !in_array('reservasalas',explode(',',$CFG->block_uai_local_modules))) {
+    	if($CFG->block_uai_local_modules && !in_array("reservasalas",explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
     	
     	$context = context_system::instance();
     	$root = array();
     	
-    	$root["string"] = get_string('reservasal', 'block_uai');
-    	$root["icon"] =   'rooms.png';
+    	$root["string"] = get_string("reservasal", "block_uai");
+    	$root["icon"] =   "rooms.png";
     	
     	$root["book"] = array();
-    	$root["book"]["string"] = get_string('reservar', 'block_uai');
+    	$root["book"]["string"] = get_string("reservar", "block_uai");
     	$root["book"]["url"] =	  new moodle_url("/local/reservasalas/reservar.php");
-    	$root["book"]["icon"] =	  'i/report';
+    	$root["book"]["icon"] =	  "i/report";
     	
-    	if(!has_capability('local/reservasalas:advancesearch', $context)) {
+    	if(!has_capability("local/reservasalas:advancesearch", $context)) {
     		$root["booked"] = array();
-    		$root["booked"]["string"] = get_string('misreservas', 'block_uai');
+    		$root["booked"]["string"] = get_string("misreservas", "block_uai");
     		$root["booked"]["url"] =	new moodle_url("/local/reservasalas/misreservas.php");
-    		$root["booked"]["icon"] =	'i/report';
+    		$root["booked"]["icon"] =	"i/report";
     	} else {
     		$root["search"] = array();
-    		$root["search"]["string"] =	get_string('search', 'block_uai');
+    		$root["search"]["string"] =	get_string("search", "block_uai");
     		$root["search"]["url"] =	new moodle_url("/local/reservasalas/search.php");
-    		$root["search"]["icon"] =	'i/report';
+    		$root["search"]["icon"] =	"i/report";
     	}
     	
-    	if(has_capability('local/reservasalas:administration', $context) || 
-    			has_capability('local/reservasalas:bockinginfo', $context) ||
-				has_capability('local/reservasalas:blocking', $context)) {
+    	if(has_capability("local/reservasalas:administration", $context) || 
+    			has_capability("local/reservasalas:bockinginfo", $context) ||
+				has_capability("local/reservasalas:blocking", $context)) {
 			$root["settings"] = array();
-			$root["settings"]["string"] = 	get_string('ajustesrs', 'block_uai');
-			$root["settings"]["icon"] =		'i/settings';
+			$root["settings"]["string"] = 	get_string("ajustesrs", "block_uai");
+			$root["settings"]["icon"] =		"i/settings";
 		}
 		
-		if(has_capability('local/reservasalas:administration', $context)) {
+		if(has_capability("local/reservasalas:administration", $context)) {
 			$root["settings"]["rooms"] = array();
-			$root["settings"]["rooms"]["string"] = get_string('ajmodversal', 'block_uai');
+			$root["settings"]["rooms"]["string"] = get_string("ajmodversal", "block_uai");
 			$root["settings"]["rooms"]["url"] =	   new moodle_url("/local/reservasalas/salas.php");
-			$root["settings"]["rooms"]["icon"] =   'i/report';
+			$root["settings"]["rooms"]["icon"] =   "i/report";
     	
 	    	$root["settings"]["buildings"] = array();
-	    	$root["settings"]["buildings"]["string"] = get_string('ajmodvered', 'block_uai');
+	    	$root["settings"]["buildings"]["string"] = get_string("ajmodvered", "block_uai");
 	    	$root["settings"]["buildings"]["url"] =	   new moodle_url("/local/reservasalas/edificios.php");
-	    	$root["settings"]["buildings"]["icon"] =   'i/report';
+	    	$root["settings"]["buildings"]["icon"] =   "i/report";
     	
 	    	$root["settings"]["campus"] = array();
-	    	$root["settings"]["campus"]["string"] = get_string('ajsedes', 'block_uai');
+	    	$root["settings"]["campus"]["string"] = get_string("ajsedes", "block_uai");
 	    	$root["settings"]["campus"]["url"] =	new moodle_url("/local/reservasalas/sedes.php");
-	    	$root["settings"]["campus"]["icon"] =   'i/report';
+	    	$root["settings"]["campus"]["icon"] =   "i/report";
     	
 	    	$root["settings"]["resources"] = array();
-	    	$root["settings"]["resources"]["string"] = get_string('urlresources', 'block_uai');
+	    	$root["settings"]["resources"]["string"] = get_string("urlresources", "block_uai");
 	    	$root["settings"]["resources"]["url"] =	   new moodle_url("/local/reservasalas/resources.php");
-	    	$root["settings"]["resources"]["icon"] =   'i/report';
+	    	$root["settings"]["resources"]["icon"] =   "i/report";
 		}
 		
-		if(has_capability('local/reservasalas:bockinginfo', $context)) {
+		if(has_capability("local/reservasalas:bockinginfo", $context)) {
 			$root["settings"]["userbooks"] = array();
-			$root["settings"]["userbooks"]["string"] = get_string('viewuserreserves', 'block_uai');
+			$root["settings"]["userbooks"]["string"] = get_string("viewuserreserves", "block_uai");
 			$root["settings"]["userbooks"]["url"] =	   new moodle_url("/local/reservasalas/reservasusuarios.php");
-			$root["settings"]["userbooks"]["icon"] =   'i/report';
+			$root["settings"]["userbooks"]["icon"] =   "i/report";
     	
 	    	$root["settings"]["diagnostic"] = array();
-	    	$root["settings"]["diagnostic"]["string"] =	get_string('diagnostic', 'block_uai');
+	    	$root["settings"]["diagnostic"]["string"] =	get_string("diagnostic", "block_uai");
 	    	$root["settings"]["diagnostic"]["url"] =	new moodle_url("/local/reservasalas/diagnostico.php");
-	    	$root["settings"]["diagnostic"]["icon"] =	'i/report';
+	    	$root["settings"]["diagnostic"]["icon"] =	"i/report";
 		}
 		
-		if(has_capability('local/reservasalas:blocking', $context)) {
+		if(has_capability("local/reservasalas:blocking", $context)) {
 			$root["settings"]["usersettings"] = array();
-			$root["settings"]["usersettings"]["string"] = get_string('usuarios', 'block_uai');
-			$root["settings"]["usersettings"]["icon"] = 'i/role';
+			$root["settings"]["usersettings"]["string"] = get_string("usuarios", "block_uai");
+			$root["settings"]["usersettings"]["icon"] = "i/role";
     	
 	    	$root["settings"]["usersettings"]["block"] = array();
-	    	$root["settings"]["usersettings"]["block"]["string"] = get_string('bloquear', 'block_uai');
+	    	$root["settings"]["usersettings"]["block"]["string"] = get_string("bloquear", "block_uai");
 	    	$root["settings"]["usersettings"]["block"]["url"] =	   new moodle_url("/local/reservasalas/bloquear.php");
-	    	$root["settings"]["usersettings"]["block"]["icon"] =   'i/report';
+	    	$root["settings"]["usersettings"]["block"]["icon"] =   "i/report";
     	
 	    	$root["settings"]["usersettings"]["unblock"] = array();
-	    	$root["settings"]["usersettings"]["unblock"]["string"] = get_string('desbloq', 'block_uai');
+	    	$root["settings"]["usersettings"]["unblock"]["string"] = get_string("desbloq", "block_uai");
 	    	$root["settings"]["usersettings"]["unblock"]["url"] =	 new moodle_url("/local/reservasalas/desbloquear.php");
-	    	$root["settings"]["usersettings"]["unblock"]["icon"] =	 'i/report';
+	    	$root["settings"]["usersettings"]["unblock"]["icon"] =	 "i/report";
 		}
 		
 		if(isset($CFG->local_uai_debug) && $CFG->local_uai_debug == 1) {
-			if(has_capability('local/reservasalas:upload', $context)) {
+			if(has_capability("local/reservasalas:upload", $context)) {
 				$root["upload"] = array();
-				$root["upload"]["string"] =	get_string('upload', 'block_uai');
+				$root["upload"]["string"] =	get_string("upload", "block_uai");
 				$root["upload"]["url"] =	new moodle_url("/local/reservasalas/upload.php");
-				$root["upload"]["icon"] =	'i/report';
+				$root["upload"]["icon"] =	"i/report";
 			}
 		}
     	
@@ -261,7 +261,7 @@ class block_uai extends block_base {
     protected function paperattendance() {
     	global $COURSE, $PAGE, $CFG;
     	
-    	if($CFG->block_uai_local_modules && !in_array('paperattendance',explode(',',$CFG->block_uai_local_modules))) {
+    	if($CFG->block_uai_local_modules && !in_array("paperattendance",explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
     	
@@ -270,37 +270,44 @@ class block_uai extends block_base {
     	
     	$root = array();
     	
-    	if(has_capability('local/paperattendance:upload', $context)){
+    	if(has_capability("local/paperattendance:upload", $context)){
     		$root["upload"] = array();
-    		$root["upload"]["string"] = get_string('uploadpaperattendance', 'block_uai');
+    		$root["upload"]["string"] = get_string("uploadpaperattendance", "block_uai");
     		$root["upload"]["url"] = 	new moodle_url("/local/paperattendance/upload.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
-    		$root["upload"]["icon"] = 	'i/backup';
+    		$root["upload"]["icon"] = 	"i/backup";
     	}
     	 
-    	if(has_capability('local/paperattendance:modules', $context)){
+    	if(has_capability("local/paperattendance:modules", $context)){
     		$root["modules"] = array();
-    		$root["modules"]["string"] = get_string('modulespaperattendance', 'block_uai');
+    		$root["modules"]["string"] = get_string("modulespaperattendance", "block_uai");
     		$root["modules"]["url"] =	 new moodle_url("/local/paperattendance/modules.php");
-    		$root["modules"]["icon"] =	 'i/calendar';
+    		$root["modules"]["icon"] =	 "i/calendar";
+    	}
+    	
+    	if(has_capability("local/paperattendance:printsearch", $context)){
+    		$root["search"] = array();
+    		$root["search"]["string"] = get_string("printsearchpaperattendance", "block_uai");
+    		$root["search"]["url"] =	new moodle_url("/local/paperattendance/printsearch.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
+    		$root["search"]["icon"] =	"t/print";
     	}
     	 
     	if($COURSE->id > 1 && $COURSE->idnumber != NULL){
-    		if(has_capability('local/paperattendance:print', $context) || has_capability('local/paperattendance:printsecre', $context)){
+    		if(has_capability("local/paperattendance:print", $context) || has_capability("local/paperattendance:printsecre", $context)){
     			$root["print"] = array();
-    			$root["print"]["string"] = get_string('printpaperattendance', 'block_uai');
+    			$root["print"]["string"] = get_string("printpaperattendance", "block_uai");
     			$root["print"]["url"] =	   new moodle_url("/local/paperattendance/print.php", array("courseid" => $COURSE->id, "categoryid"  => $categoryid));
-    			$root["print"]["icon"] =   'e/print';
+    			$root["print"]["icon"] =   "e/print";
     		}
-    		if(has_capability('local/paperattendance:history', $context)){
+    		if(has_capability("local/paperattendance:history", $context)){
     			$root["history"] = array();
-    			$root["history"]["string"] = get_string('historypaperattendance', 'block_uai');
+    			$root["history"]["string"] = get_string("historypaperattendance", "block_uai");
     			$root["history"]["url"] =	 new moodle_url("/local/paperattendance/history.php", array("courseid" => $COURSE->id));
-    			$root["history"]["icon"] =	 'i/grades';
+    			$root["history"]["icon"] =	 "i/grades";
     	
     			$root["discussion"] = array();
-    			$root["discussion"]["string"] = get_string('discussionpaperattendance', 'block_uai');
+    			$root["discussion"]["string"] = get_string("discussionpaperattendance", "block_uai");
     			$root["discussion"]["url"] =	new moodle_url("/local/paperattendance/discussion.php", array("courseid" => $COURSE->id));
-    			$root["discussion"]["icon"] =	'i/cohort';
+    			$root["discussion"]["icon"] =	"i/cohort";
     		}
     	}
     	
@@ -308,8 +315,8 @@ class block_uai extends block_base {
     		return false;
     	}
     	
-    	$root["string"] = get_string('paperattendance', 'block_uai');
-    	$root["icon"] =   'attendance.png';
+    	$root["string"] = get_string("paperattendance", "block_uai");
+    	$root["icon"] =   "attendance.png";
     	
     	return $root;
     }
@@ -317,30 +324,30 @@ class block_uai extends block_base {
     protected function facebook() {
     	global $USER, $CFG, $DB;
     	
-    	if($CFG->block_uai_local_modules && !in_array('facebook',explode(',',$CFG->block_uai_local_modules))) {
+    	if($CFG->block_uai_local_modules && !in_array("facebook",explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
     	
     	$root = array();
-    	$root["string"] = get_string('facebook', 'block_uai');
-    	$root["icon"] =   'facebook.png';
+    	$root["string"] = get_string("facebook", "block_uai");
+    	$root["icon"] =   "facebook.png";
     	
-    	$exist = $DB->get_record('facebook_user', array('moodleid' => $USER->id, 'status' => '1'));
+    	$exist = $DB->get_record("facebook_user", array("moodleid" => $USER->id, "status" => "1"));
     	if($exist == false) {
     		$root["connect"] = array();
-    		$root["connect"]["string"] = get_string('connect', 'block_uai');
+    		$root["connect"]["string"] = get_string("connect", "block_uai");
     		$root["connect"]["url"] =	 new moodle_url("/local/facebook/connect.php");
-    		$root["connect"]["icon"] =	 'i/mnethost';
+    		$root["connect"]["icon"] =	 "i/mnethost";
     	} else {
     		$root["info"] = array();
-    		$root["info"]["string"] = get_string('info', 'block_uai');
+    		$root["info"]["string"] = get_string("info", "block_uai");
     		$root["info"]["url"] =	  new moodle_url("/local/facebook/connect.php");
-    		$root["info"]["icon"] =	  'i/info';
+    		$root["info"]["icon"] =	  "i/info";
     		
     		$root["app"] = array();
-    		$root["app"]["string"] = get_string('goapp', 'block_uai');
+    		$root["app"]["string"] = get_string("goapp", "block_uai");
     		$root["app"]["url"] =	 $CFG->fbk_url;
-    		$root["app"]["icon"] =	 't/right';
+    		$root["app"]["icon"] =	 "t/right";
     	}
     	return $root;
     }
@@ -348,33 +355,33 @@ class block_uai extends block_base {
     protected function syncomega() {
     	global $CFG;
     	
-    	if($CFG->block_uai_local_modules && !in_array('syncomega',explode(',',$CFG->block_uai_local_modules))) {
+    	if($CFG->block_uai_local_modules && !in_array("syncomega",explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
     	
     	$context = context_system::instance();
-    	if(!has_capability('local/sync:history', $context)) {
+    	if(!has_capability("local/sync:history", $context)) {
     		return false;
     	}
     	
     	$root = array();
-    	$root["string"] = get_string('syncomega', 'block_uai');
-    	$root["icon"] =   'omega.png';
+    	$root["string"] = get_string("syncomega", "block_uai");
+    	$root["icon"] =   "omega.png";
     	
     	$root["create"] = array();
-    	$root["create"]["string"] = get_string('synccreate', 'block_uai');
+    	$root["create"]["string"] = get_string("synccreate", "block_uai");
     	$root["create"]["url"] =	new moodle_url("/local/sync/create.php");
-    	$root["create"]["icon"] =	'e/new_document';
+    	$root["create"]["icon"] =	"e/new_document";
     	
     	$root["records"] = array();
-    	$root["records"]["string"] = get_string('syncrecord', 'block_uai');
+    	$root["records"]["string"] = get_string("syncrecord", "block_uai");
     	$root["records"]["url"] =	 new moodle_url("/local/sync/record.php");
-    	$root["records"]["icon"] =	 'e/fullpage';
+    	$root["records"]["icon"] =	 "e/fullpage";
     	
     	$root["history"] = array();
-    	$root["history"]["string"] = get_string('synchistory', 'block_uai');
+    	$root["history"]["string"] = get_string("synchistory", "block_uai");
     	$root["history"]["url"] =	 new moodle_url("/local/sync/history.php");
-    	$root["history"]["icon"] =	 'i/siteevent';
+    	$root["history"]["icon"] =	 "i/siteevent";
     	
     	return $root;
     }
@@ -382,22 +389,22 @@ class block_uai extends block_base {
     protected function dashboard() {
     	global $CFG;
     	
-    	if($CFG->block_uai_local_modules && !in_array('dashboard', explode(',',$CFG->block_uai_local_modules))) {
+    	if($CFG->block_uai_local_modules && !in_array("dashboard", explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
     	
     	$context = context_system::instance();
-    	if(!has_capability('local/dashboard:view', $context)) {
+    	if(!has_capability("local/dashboard:view", $context)) {
     		return false;
     	}
     	
     	$root = array();
     	$root["string"] = "Dashboard";
-    	$root["icon"] =   'emarking.png';
+    	$root["icon"] =   "emarking.png";
     	
     	$root["dashboard"]["string"] = "Dashboard";
-    	$root["dashboard"]["url"] = new moodle_url('/local/dashboard/frontpage.php');
-    	$root["dashboard"]["icon"] = 'i/scales';
+    	$root["dashboard"]["url"] = new moodle_url("/local/dashboard/frontpage.php");
+    	$root["dashboard"]["icon"] = "i/scales";
     	
     	return $root;
     }
@@ -416,8 +423,8 @@ class block_uai extends block_base {
     	}
     	
     	$PAGE->requires->jquery();
-    	$PAGE->requires->jquery_plugin ( 'ui' );
-    	$PAGE->requires->jquery_plugin ( 'ui-css' );
+    	$PAGE->requires->jquery_plugin ( "ui" );
+    	$PAGE->requires->jquery_plugin ( "ui-css" );
     	$this->content = new stdClass();
     	
     	$menu = array();
@@ -585,6 +592,6 @@ class block_uai extends block_base {
     }
     
     public function get_aria_role() {
-    	return 'navigation';
+    	return "navigation";
     }
 }

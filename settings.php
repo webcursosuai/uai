@@ -24,35 +24,35 @@
 * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
 */
 
-defined('MOODLE_INTERNAL') || die;
+defined("MOODLE_INTERNAL") || die;
 
 if ($ADMIN->fulltree) {
 	$settings->add(new admin_setting_configmulticheckbox(
-			'block_uai_local_modules',
-			'Módulos locales activos',
-			'Lista de módulos locales activos.',
+			"block_uai_local_modules",
+			"Módulos locales activos",
+			"Lista de módulos locales activos.",
 			array(
-					'reservasalas' => 1,
-					'facebook' => 1,
-					'emarking' => 1,
-					'reportes' => 0,
-					'paperattendance' => 1,
-					'syncomega' => 1
+					"reservasalas" => 1,
+					"facebook" => 1,
+					"emarking" => 1,
+					"reportes" => 0,
+					"paperattendance" => 1,
+					"syncomega" => 1
 			),
 			array(
-					'reservasalas'=>'local/reservasalas',
-					'facebook'=>'local/facebook',
-					'emarking'=>'local/emarking',
-					'reportes'=>'local/reportes',
-					'paperattendance'=>'local/paperattendance',
-					'syncomega'=>'local/sync'
+					"reservasalas" => "local/reservasalas",
+					"facebook" => "local/facebook",
+					"emarking" => "local/emarking",
+					"reportes" => "local/reportes",
+					"paperattendance" => "local/paperattendance",
+					"syncomega" => "local/sync"
 			)
 	));
 	
 	$settings->add(new admin_setting_configcheckbox(
-			'block_uai_icons',
-			'Iconos de bloque',
-			'Define si se muestran los íconos de cada módulo',
+			"block_uai_icons",
+			"Iconos de bloque",
+			"Define si se muestran los íconos de cada módulo",
 			1
 	));
 }
