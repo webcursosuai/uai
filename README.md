@@ -1,7 +1,11 @@
 # block_uai
 
 UAI Block for Moodle 3.1 & 3.2
+
 Version: 2.0.0
+
+[[/pix/blockscreenshot.png|alt=block_image]]
+
 ------------------------------------------
 
 Authors:
