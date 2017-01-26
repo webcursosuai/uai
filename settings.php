@@ -49,14 +49,10 @@ if ($ADMIN->fulltree) {
 			)
 	));
 	
-	$settings->add(new admin_setting_configselect(
-			'block_uai_version', 
-			"Versión de Moodle",
-            "La versión seleccionada debe coincidir con la versión de Moodle utilizada. De lo contrario, puede mostrarse mal o dejar de funcionar.", 
-			31,
-			array(
-					30 => "3.0 o inferior",
-					31 => "3.1 o superior"
-			)
+	$settings->add(new admin_setting_configcheckbox(
+			'block_uai_icons',
+			'Iconos de bloque',
+			'Define si se muestran los íconos de cada módulo',
+			1
 	));
 }
