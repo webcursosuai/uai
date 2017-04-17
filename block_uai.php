@@ -256,7 +256,7 @@ class block_uai extends block_base {
 	}
 	
 	protected function paperattendance() {
-		global $COURSE, $PAGE, $CFG, $DB;
+		global $COURSE, $PAGE, $CFG, $DB, $USER;
 		
 		if($CFG->block_uai_local_modules && !in_array("paperattendance",explode(",",$CFG->block_uai_local_modules))) {
 			return false;
