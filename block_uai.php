@@ -234,7 +234,7 @@ class block_uai extends block_base {
 			$root["settings"]["usersettings"] = array();
 			$root["settings"]["usersettings"]["string"] = get_string("usuarios", "block_uai");
 			$root["settings"]["usersettings"]["icon"] = "i/role";
-    	
+   	
 	    	$root["settings"]["usersettings"]["block"] = array();
 	    	$root["settings"]["usersettings"]["block"]["string"] = get_string("bloquear", "block_uai");
 	    	$root["settings"]["usersettings"]["block"]["url"] =	   new moodle_url("/local/reservasalas/bloquear.php");
@@ -259,67 +259,77 @@ class block_uai extends block_base {
     }
     
     protected function paperattendance() {
-    	global $COURSE, $PAGE, $CFG;
-    	
-    	if($CFG->block_uai_local_modules && !in_array("paperattendance",explode(",",$CFG->block_uai_local_modules))) {
-    		return false;
-    	}
-    	
-    	$categoryid = optional_param("categoryid", 1, PARAM_INT);
-    	$context = $PAGE->context;
-    	
-    	$root = array();
-    	
-    	if(has_capability("local/paperattendance:upload", $context)){
-    		$root["upload"] = array();
-    		$root["upload"]["string"] = get_string("uploadpaperattendance", "block_uai");
-    		$root["upload"]["url"] = 	new moodle_url("/local/paperattendance/upload.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
-    		$root["upload"]["icon"] = 	"i/backup";
-    	}
-    	 
-    	if(has_capability("local/paperattendance:modules", $context)){
-    		$root["modules"] = array();
-    		$root["modules"]["string"] = get_string("modulespaperattendance", "block_uai");
-    		$root["modules"]["url"] =	 new moodle_url("/local/paperattendance/modules.php");
-    		$root["modules"]["icon"] =	 "i/calendar";
-    	}
-    	
-    	if(has_capability("local/paperattendance:printsearch", $context)){
-    		$root["search"] = array();
-    		$root["search"]["string"] = get_string("printsearchpaperattendance", "block_uai");
-    		$root["search"]["url"] =	new moodle_url("/local/paperattendance/printsearch.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
-    		$root["search"]["icon"] =	"t/print";
-    	}
-    	 
-    	if($COURSE->id > 1 && $COURSE->idnumber != NULL){
-    		if(has_capability("local/paperattendance:print", $context) || has_capability("local/paperattendance:printsecre", $context)){
-    			$root["print"] = array();
-    			$root["print"]["string"] = get_string("printpaperattendance", "block_uai");
-    			$root["print"]["url"] =	   new moodle_url("/local/paperattendance/print.php", array("courseid" => $COURSE->id, "categoryid"  => $categoryid));
-    			$root["print"]["icon"] =   "e/print";
-    		}
-    		if(has_capability("local/paperattendance:history", $context)){
-    			$root["history"] = array();
-    			$root["history"]["string"] = get_string("historypaperattendance", "block_uai");
-    			$root["history"]["url"] =	 new moodle_url("/local/paperattendance/history.php", array("courseid" => $COURSE->id));
-    			$root["history"]["icon"] =	 "i/grades";
-    	
-    			$root["discussion"] = array();
-    			$root["discussion"]["string"] = get_string("discussionpaperattendance", "block_uai");
-    			$root["discussion"]["url"] =	new moodle_url("/local/paperattendance/discussion.php", array("courseid" => $COURSE->id));
-    			$root["discussion"]["icon"] =	"i/cohort";
-    		}
-    	}
-    	
-    	if(empty($root)) {
-    		return false;
-    	}
-    	
-    	$root["string"] = get_string("paperattendance", "block_uai");
-    	$root["icon"] =   "attendance.png";
-    	
-    	return $root;
-    }
+ 		global $COURSE, $PAGE, $CFG, $DB, $USER;
+ 		
+ 		if($CFG->block_uai_local_modules && !in_array("paperattendance",explode(",",$CFG->block_uai_local_modules))) {
+ 			return false;
+ 		}
+ 		
+ 		$categoryid = optional_param("categoryid", 1, PARAM_INT);
+ 		$context = $PAGE->context;
+ 		
+ 		//new feature for the secretary to see printsearch and upload from everywhere
+ 		$sqlcategory = "SELECT cc.*
+ 					FROM {course_categories} cc
+ 					INNER JOIN {role_assignments} ra ON (ra.userid = ?)
+ 					INNER JOIN {role} r ON (r.id = ra.roleid)
+ 					INNER JOIN {context} co ON (co.id = ra.contextid)
+ 					WHERE cc.id = co.instanceid AND r.shortname = ?";
+ 		$categoryparams = array($USER->id, "secre_pregrado");
+ 		$secretaryhascategory = $DB->get_record_sql($sqlcategory, $categoryparams);
+ 		
+ 		$root = array();
+		
+ 		if(has_capability("local/paperattendance:upload", $context) || $secretaryhascategory){
+ 			$root["upload"] = array();
+			$root["upload"]["string"] = get_string("uploadpaperattendance", "block_uai");
+ 			$root["upload"]["url"] = 	new moodle_url("/local/paperattendance/upload.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
+ 			$root["upload"]["icon"] = 	"i/backup";
+ 		}
+ 		
+ 		if(has_capability("local/paperattendance:modules", $context)){
+ 			$root["modules"] = array();
+ 			$root["modules"]["string"] = get_string("modulespaperattendance", "block_uai");
+ 			$root["modules"]["url"] =	 new moodle_url("/local/paperattendance/modules.php");
+ 			$root["modules"]["icon"] =	 "i/calendar";
+ 		}
+ 		
+ 		if(has_capability("local/paperattendance:printsearch", $context) || $secretaryhascategory){
+ 			$root["search"] = array();
+ 			$root["search"]["string"] = get_string("printsearchpaperattendance", "block_uai");
+ 			$root["search"]["url"] =	new moodle_url("/local/paperattendance/printsearch.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
+ 			$root["search"]["icon"] =	"t/print";
+ 		}
+ 		
+ 		if($COURSE->id > 1 && $COURSE->idnumber != NULL){
+ 			if(has_capability("local/paperattendance:print", $context) || has_capability("local/paperattendance:printsecre", $context)){
+ 				$root["print"] = array();
+ 				$root["print"]["string"] = get_string("printpaperattendance", "block_uai");
+ 				$root["print"]["url"] =	   new moodle_url("/local/paperattendance/print.php", array("courseid" => $COURSE->id, "categoryid"  => $categoryid));
+ 				$root["print"]["icon"] =   "e/print";
+ 			}
+ 			if(has_capability("local/paperattendance:history", $context)){
+ 				$root["history"] = array();
+ 				$root["history"]["string"] = get_string("historypaperattendance", "block_uai");
+ 				$root["history"]["url"] =	 new moodle_url("/local/paperattendance/history.php", array("courseid" => $COURSE->id));
+ 				$root["history"]["icon"] =	 "i/grades";
+ 				
+ 				$root["discussion"] = array();
+ 				$root["discussion"]["string"] = get_string("discussionpaperattendance", "block_uai");
+				$root["discussion"]["url"] =	new moodle_url("/local/paperattendance/discussion.php", array("courseid" => $COURSE->id));
+				$root["discussion"]["icon"] =	"i/cohort";
+			}
+		}
+ 		
+ 		if(empty($root)) {
+ 			return false;
+ 		}
+ 		
+ 		$root["string"] = get_string("paperattendance", "block_uai");
+ 		$root["icon"] =   "attendance.png";
+ 		
+ 		return $root;
+ 	}
     
     protected function facebook() {
     	global $USER, $CFG, $DB;
