@@ -302,10 +302,10 @@ class block_uai extends block_base {
  		}
  		
  		if(has_capability("local/paperattendance:missingpages", $context) || $secretaryhascategory){
- 			$root["modules"] = array();
- 			$root["modules"]["string"] = get_string("missingpagespaperattendance", "block_uai");
- 			$root["modules"]["url"] =	 new moodle_url("/local/paperattendance/missingpages.php");
- 			$root["modules"]["icon"] =	 "i/warning";
+ 			$root["missing"] = array();
+ 			$root["missing"]["string"] = get_string("missingpagespaperattendance", "block_uai");
+ 			$root["missing"]["url"] =	 new moodle_url("/local/paperattendance/missingpages.php");
+ 			$root["missing"]["icon"] =	 "i/warning";
  		}
  			
  		if($COURSE->id > 1 && $COURSE->idnumber != NULL){
