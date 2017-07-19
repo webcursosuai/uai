@@ -56,6 +56,7 @@ $string["historypaperattendance"] = "Historial";
 $string["paperattendance"] = "Asistencias en papel";
 $string["modulespaperattendance"] = "Editor de módulos";
 $string["printsearchpaperattendance"] = "Búsqueda para impresión";
+$string["missingpagespaperattendance"] = "Páginas perdidas";
 $string["syncomega"] = "Sincronizaciones Omega";
 $string["synchistory"] = "Historial";
 $string["synccreate"] = "Crear";

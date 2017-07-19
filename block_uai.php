@@ -301,6 +301,13 @@ class block_uai extends block_base {
  			$root["search"]["icon"] =	"t/print";
  		}
  		
+ 		if(has_capability("local/paperattendance:missingpages", $context) || $secretaryhascategory){
+ 			$root["modules"] = array();
+ 			$root["modules"]["string"] = get_string("missingpagespaperattendance", "block_uai");
+ 			$root["modules"]["url"] =	 new moodle_url("/local/paperattendance/missingpages.php");
+ 			$root["modules"]["icon"] =	 "i/warning";
+ 		}
+ 			
  		if($COURSE->id > 1 && $COURSE->idnumber != NULL){
  			if(has_capability("local/paperattendance:print", $context) || has_capability("local/paperattendance:printsecre", $context)){
  				$root["print"] = array();

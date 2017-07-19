@@ -56,6 +56,7 @@ $string["historypaperattendance"]="History";
 $string["paperattendance"]="Paper Attendance";
 $string["modulespaperattendance"]= "Modules editor";
 $string["printsearchpaperattendance"] = "Search for print";
+$string["missingpagespaperattendance"] = "Missing pages";
 $string["syncomega"]="Omega Sync";
 $string["synchistory"]="History";
 $string["synccreate"]="Create";
