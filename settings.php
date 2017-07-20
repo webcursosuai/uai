@@ -37,7 +37,8 @@ if ($ADMIN->fulltree) {
 					"emarking" => 1,
 					"reportes" => 0,
 					"paperattendance" => 1,
-					"syncomega" => 1
+					"syncomega" => 1,
+					"deportes" => 1
 			),
 			array(
 					"reservasalas" => "local/reservasalas",
@@ -45,7 +46,8 @@ if ($ADMIN->fulltree) {
 					"emarking" => "local/emarking",
 					"reportes" => "local/reportes",
 					"paperattendance" => "local/paperattendance",
-					"syncomega" => "local/sync"
+					"syncomega" => "local/sync",
+					"deportes" => "local/deportes"
 			)
 	));
 	

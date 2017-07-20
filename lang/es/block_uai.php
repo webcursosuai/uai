@@ -62,6 +62,11 @@ $string["synchistory"] = "Historial";
 $string["synccreate"] = "Crear";
 $string["syncrecord"] = "Registros";
 $string["discussionpaperattendance"] = "Discusiones de asistencia";
+$string["deportes"] = "Deportes";
+$string["attendance"] = "Asistencia";
+$string["modules"] = "Editor de módulo";
+$string["schedule"] = "Horario";
+$string["reserve"] = "Reservar";
 
 $string["blocknewprintorder"] = "Enviar emarking a impresión";
 $string["blockmyexams"] = "Mis emarkings";
