@@ -426,6 +426,40 @@ class block_uai extends block_base {
     	return $root;
     }
     
+    protected function deportes() {
+    	global $USER, $CFG, $DB;
+    	
+    	if($CFG->block_uai_local_modules && !in_array("deportes",explode(",",$CFG->block_uai_local_modules))) {
+    		return false;
+    	}
+    	
+    	$root = array();
+    	$root["string"] = get_string("deportes", "block_uai");
+    	$root["icon"] =   "deportes.ico";
+    	
+    		$root["attendance"] = array();
+    		$root["attendance"]["string"] = get_string("attendance", "block_uai");
+    		$root["attendance"]["url"] = new moodle_url("/local/deportes/attendance.php");
+    		$root["attendance"]["icon"] = "e/table_props";
+    		
+    		$root["modules"] = array();
+    		$root["modules"]["string"] = get_string("modules", "block_uai");
+    		$root["modules"]["url"] = new moodle_url("/local/deportes/modules.php");
+    		$root["modules"]["icon"] =	 "t/right";
+    		
+    		$root["sports"] = array();
+    		$root["sports"]["string"] = get_string("sports", "block_uai");
+    		$root["sports"]["url"] = new moodle_url("/local/deportes/addsports.php");
+    		$root["sports"]["icon"] =	 "t/right";
+    		
+    		$root["schedule"] = array();
+    		$root["schedule"]["string"] = get_string("schedule", "block_uai");
+    		$root["schedule"]["url"] = new moodle_url("/local/deportes/sportsmodulematch.php");
+    		$root["schedule"]["icon"] =	 "t/right";
+    	
+    	return $root;
+    }
+    
     function get_content() {
     	global $CFG, $PAGE;
     	
@@ -465,6 +499,9 @@ class block_uai extends block_base {
     		 
     	if($paperattendance = $this->paperattendance()) {
     		$menu[] = $paperattendance;
+    	}
+    	if($deportes = $this->deportes()) {
+    		$menu[] = $deportes;
     	}
     		 
     	$this->content->text = $this->block_uai_renderer($menu);
