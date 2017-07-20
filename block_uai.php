@@ -449,12 +449,12 @@ class block_uai extends block_base {
     		
     		$root["sports"] = array();
     		$root["sports"]["string"] = get_string("reserve", "block_uai");
-    		$root["sports"]["url"] = new moodle_url("/local/deportes/addsports.php");
+    		$root["sports"]["url"] = new moodle_url("/local/deportes/reserve.php");
     		$root["sports"]["icon"] = "t/assignroles";
     		
     		$root["schedule"] = array();
     		$root["schedule"]["string"] = get_string("schedule", "block_uai");
-    		$root["schedule"]["url"] = new moodle_url("/local/deportes/sportsmodulematch.php");
+    		$root["schedule"]["url"] = new moodle_url("/local/deportes/schedule.php");
     		$root["schedule"]["icon"] =	 "i/news";
     	
     	return $root;
