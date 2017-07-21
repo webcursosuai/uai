@@ -454,7 +454,7 @@ class block_uai extends block_base {
 	    		$root["schedule"]["url"] = new moodle_url("/local/deportes/schedule.php");
 	    		$root["schedule"]["icon"] =	 "i/news";
 	    		
-	    		if(has_capavility("local/deportes:edit", $context)){
+	    		if(has_capability("local/deportes:edit", $context)){
 	    		
 		    		$root["modules"] = array();
 		    		$root["modules"]["string"] = get_string("modules", "block_uai");
