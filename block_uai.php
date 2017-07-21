@@ -434,8 +434,9 @@ class block_uai extends block_base {
     	}
     	
     	$email = explode("@", $USER->email);
-    	if($email[1] == $CFG->deportes_emailextension || is_siteadmin()){
     	$context = context_system::instance();
+    	if($email[1] == $CFG->deportes_emailextension || is_siteadmin() || has_capability("local/deportes:edit", $context)){
+    	
     		
 	    	$root = array();
 	    	$root["string"] = get_string("deportes", "block_uai");
