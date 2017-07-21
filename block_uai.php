@@ -432,13 +432,15 @@ class block_uai extends block_base {
     	if($CFG->block_uai_local_modules && !in_array("deportes",explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
+    	
+    	$email = explode("@", $USER->email);
+    	if($email[1] == $CFG->deportes_emailextension || is_siteadmin()){
     	$context = context_system::instance();
     		
 	    	$root = array();
 	    	$root["string"] = get_string("deportes", "block_uai");
 	    	$root["icon"] =   "deportes.ico";
 	    	
-	    	if(has_capability("local/deportes:view", $context)){
 	    		$root["attendance"] = array();
 	    		$root["attendance"]["string"] = get_string("attendance", "block_uai");
 	    		$root["attendance"]["url"] = new moodle_url("/local/deportes/attendance.php");
