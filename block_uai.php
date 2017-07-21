@@ -445,17 +445,17 @@ class block_uai extends block_base {
 	    		$root["attendance"] = array();
 	    		$root["attendance"]["string"] = get_string("attendance", "block_uai");
 	    		$root["attendance"]["url"] = new moodle_url("/local/deportes/attendance.php");
-	    		$root["attendance"]["icon"] = "e/table_props";
+	    		$root["attendance"]["icon"] = "i/completion-auto-enabled";
 	    		
-	    		$root["sports"] = array();
-	    		$root["sports"]["string"] = get_string("reserve", "block_uai");
-	    		$root["sports"]["url"] = new moodle_url("/local/deportes/reserve.php");
-	    		$root["sports"]["icon"] = "t/assignroles";
+	    		$root["reserve"] = array();
+	    		$root["reserve"]["string"] = get_string("reserve", "block_uai");
+	    		$root["reserve"]["url"] = new moodle_url("/local/deportes/reserve.php");
+	    		$root["reserve"]["icon"] = "t/assignroles";
 	    		
 	    		$root["schedule"] = array();
 	    		$root["schedule"]["string"] = get_string("schedule", "block_uai");
 	    		$root["schedule"]["url"] = new moodle_url("/local/deportes/schedule.php");
-	    		$root["schedule"]["icon"] =	 "i/news";
+	    		$root["schedule"]["icon"] =	 "e/table";
 	    		
 	    		if(has_capability("local/deportes:edit", $context)){
 	    		
@@ -463,6 +463,16 @@ class block_uai extends block_base {
 		    		$root["modules"]["string"] = get_string("modules", "block_uai");
 		    		$root["modules"]["url"] = new moodle_url("/local/deportes/modules.php");
 		    		$root["modules"]["icon"] =	 "i/calendar";
+		    		
+		    		$root["sports"] = array();
+		    		$root["sports"]["string"] = get_string("editsports", "block_uai");
+		    		$root["sports"]["url"] = new moodle_url("/local/deportes/addsports.php");
+		    		$root["sports"]["icon"] =	 "i/edit";
+		    		
+		    		$root["scheduleedit"] = array();
+		    		$root["scheduleedit"]["string"] = get_string("editschedule", "block_uai");
+		    		$root["scheduleedit"]["url"] = new moodle_url("/local/deportes/sportsmodulematch.php");
+		    		$root["scheduleedit"]["icon"] =	 "e/table_props";
 		    		
 	    		}
     	}else{

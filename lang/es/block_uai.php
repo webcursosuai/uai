@@ -67,6 +67,8 @@ $string["attendance"] = "Asistencia";
 $string["modules"] = "Editor de módulo";
 $string["schedule"] = "Horario";
 $string["reserve"] = "Reservar";
+$string["editsports"] = "Editor de deporte";
+$string["editschedule"] = "Editor de horario";
 
 $string["blocknewprintorder"] = "Enviar emarking a impresión";
 $string["blockmyexams"] = "Mis emarkings";

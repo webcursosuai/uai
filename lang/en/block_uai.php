@@ -67,6 +67,8 @@ $string["attendance"] = "Attendance";
 $string["modules"] = "Modules editor";
 $string["schedule"] = "schedule";
 $string["reserve"] = "Reservations";
+$string["editsports"] = "Sports editor";
+$string["editschedule"] = "Schedule editor";
 
 
 $string["blocknewprintorder"] = "Send new emarking for printing";
