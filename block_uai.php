@@ -433,12 +433,12 @@ class block_uai extends block_base {
     		return false;
     	}
     	$context = context_system::instance();
-    	if(has_capability("local/deportes:view", $context)){
     		
 	    	$root = array();
 	    	$root["string"] = get_string("deportes", "block_uai");
 	    	$root["icon"] =   "deportes.ico";
 	    	
+	    	if(has_capability("local/deportes:view", $context)){
 	    		$root["attendance"] = array();
 	    		$root["attendance"]["string"] = get_string("attendance", "block_uai");
 	    		$root["attendance"]["url"] = new moodle_url("/local/deportes/attendance.php");
