@@ -432,6 +432,7 @@ class block_uai extends block_base {
     	if($CFG->block_uai_local_modules && !in_array("deportes",explode(",",$CFG->block_uai_local_modules))) {
     		return false;
     	}
+    	$context = context_system::instance();
     	if(has_capability("local/deportes:view", $context)){
     		
 	    	$root = array();
