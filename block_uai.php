@@ -459,7 +459,7 @@ class block_uai extends block_base {
 	    		
 	    		if(has_capability("local/deportes:edit", $context)){
 	    		
-		    		$root["modules"] = array();
+		    	/*	$root["modules"] = array();
 		    		$root["modules"]["string"] = get_string("modules", "block_uai");
 		    		$root["modules"]["url"] = new moodle_url("/local/deportes/modules.php");
 		    		$root["modules"]["icon"] =	 "i/calendar";
@@ -468,7 +468,7 @@ class block_uai extends block_base {
 		    		$root["sports"]["string"] = get_string("editsports", "block_uai");
 		    		$root["sports"]["url"] = new moodle_url("/local/deportes/addsports.php");
 		    		$root["sports"]["icon"] =	 "i/edit";
-		    		
+		    	*/
 		    		$root["scheduleedit"] = array();
 		    		$root["scheduleedit"]["string"] = get_string("editschedule", "block_uai");
 		    		$root["scheduleedit"]["url"] = new moodle_url("/local/deportes/sportsmodulematch.php");
