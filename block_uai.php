@@ -265,7 +265,7 @@ class block_uai extends block_base {
  			return false;
  		}
  		
- 		$categoryid = optional_param("categoryid", 1, PARAM_INT);
+ 		$categoryid = optional_param("categoryid", 406, PARAM_INT);
  		$context = $PAGE->context;
  		
  		//new feature for the secretary to see printsearch and upload from everywhere
