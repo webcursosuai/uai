@@ -57,4 +57,15 @@ if ($ADMIN->fulltree) {
 			"Define si se muestran los íconos de cada módulo",
 			1
 	));
+	
+	//Categoryid
+	$settings->add(
+			new admin_setting_configtext(
+					'block_uai_categoryid',
+					'Id de Catergoría',
+					'Valor categoría de pregrado: 1 para Webcursos-d / 406 para Webcursos Producción',
+					406,
+					PARAM_INT
+					)
+			);
 }
