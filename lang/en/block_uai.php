@@ -65,10 +65,11 @@ $string["discussionpaperattendance"]="Attendances discussions";
 $string["deportes"] = "Sports";
 $string["attendance"] = "Attendance";
 $string["modules"] = "Modules editor";
-$string["schedule"] = "schedule";
+$string["schedule"] = "Schedule";
 $string["reserve"] = "Reservations";
 $string["editsports"] = "Sports editor";
 $string["editschedule"] = "Schedule editor";
+$string["page"] = "General course";
 
 
 $string["blocknewprintorder"] = "Send new emarking for printing";
