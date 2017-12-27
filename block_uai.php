@@ -444,7 +444,7 @@ class block_uai extends block_base {
 	    	
 	    	$root["page"] = array();
 	    	$root["page"]["string"] = get_string("page", "block_uai");
-	    	$root["page"]["url"] = new moodle_url("/course/view.php?id=".$CFG->deportes_courseid);
+	    	$root["page"]["url"] = new moodle_url("/course/view.php", array("id" => $CFG->deportes_courseid));
 	    	$root["page"]["icon"] = "a/view_list_active";
 	    	
     		$root["attendance"] = array();
