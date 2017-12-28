@@ -442,10 +442,12 @@ class block_uai extends block_base {
 	    	$root["string"] = get_string("deportes", "block_uai");
 	    	$root["icon"] =   "deportes.ico";
 	    	
-	    	$root["page"] = array();
-	    	$root["page"]["string"] = get_string("page", "block_uai");
-	    	$root["page"]["url"] = new moodle_url("/course/view.php", array("id" => $CFG->deportes_courseid));
-	    	$root["page"]["icon"] = "a/view_list_active";
+	    	if($CFG->deportes_courseid != 0) {
+		    	$root["page"] = array();
+		    	$root["page"]["string"] = get_string("page", "block_uai");
+		    	$root["page"]["url"] = new moodle_url("/course/view.php", array("id" => $CFG->deportes_courseid));
+		    	$root["page"]["icon"] = "a/view_list_active";
+	    	}
 	    	
     		$root["attendance"] = array();
     		$root["attendance"]["string"] = get_string("attendance", "block_uai");
