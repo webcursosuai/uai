@@ -478,7 +478,7 @@ class block_uai extends block_base {
 	    	*/
 	    		$root["scheduleedit"] = array();
 	    		$root["scheduleedit"]["string"] = get_string("editschedule", "block_uai");
-	    		$root["scheduleedit"]["url"] = new moodle_url("/local/deportes/sportsmodulematch.php");
+	    		$root["scheduleedit"]["url"] = new moodle_url("/local/deportes/addsportfile.php");
 	    		$root["scheduleedit"]["icon"] =	 "e/table_props";
 	    		
     		}
