@@ -270,17 +270,23 @@ class block_uai extends block_base {
  		
  		//new feature for the secretary to see printsearch and upload from everywhere
  		$sqlcategory = "SELECT cc.*
- 					FROM {course_categories} cc
- 					INNER JOIN {role_assignments} ra ON (ra.userid = ?)
- 					INNER JOIN {role} r ON (r.id = ra.roleid)
- 					INNER JOIN {context} co ON (co.id = ra.contextid)
- 					WHERE cc.id = co.instanceid AND r.shortname = ?";
- 		$categoryparams = array($USER->id, "secre_pregrado");
- 		$secretaryhascategory = $DB->get_record_sql($sqlcategory, $categoryparams);
+					FROM {course_categories} cc
+					INNER JOIN {role_assignments} ra ON (ra.userid = ?)
+					INNER JOIN {role} r ON (r.id = ra.roleid AND r.shortname = ?)
+					INNER JOIN {context} co ON (co.id = ra.contextid  AND  co.instanceid = cc.id  )";
+ 		
+ 		$categoryparams = array($USER->id, "secrepaper");
+ 		
+ 		$categorys = $DB->get_records_sql($sqlcategory, $categoryparams);
+ 		$categoryscount = count($categorys);
+ 		$is_secretary = 0;
+ 		if($categoryscount > 0){
+ 			$is_secretary = 1;
+ 		}
  		
  		$root = array();
 		
- 		if(has_capability("local/paperattendance:upload", $context) || $secretaryhascategory){
+ 		if(has_capability("local/paperattendance:upload", $context) || $is_secretary){
  			$root["upload"] = array();
 			$root["upload"]["string"] = get_string("uploadpaperattendance", "block_uai");
  			$root["upload"]["url"] = 	new moodle_url("/local/paperattendance/upload.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
@@ -294,14 +300,14 @@ class block_uai extends block_base {
  			$root["modules"]["icon"] =	 "i/calendar";
  		}
  		
- 		if(has_capability("local/paperattendance:printsearch", $context) || $secretaryhascategory){
+ 		if(has_capability("local/paperattendance:printsearch", $context) || $is_secretary){
  			$root["search"] = array();
  			$root["search"]["string"] = get_string("printsearchpaperattendance", "block_uai");
  			$root["search"]["url"] =	new moodle_url("/local/paperattendance/printsearch.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
  			$root["search"]["icon"] =	"t/print";
  		}
  		
- 		if(has_capability("local/paperattendance:missingpages", $context) || $secretaryhascategory){
+ 		if(has_capability("local/paperattendance:missingpages", $context) || $is_secretary){
  			$root["missing"] = array();
  			$root["missing"]["string"] = get_string("missingpagespaperattendance", "block_uai");
  			$root["missing"]["url"] =	 new moodle_url("/local/paperattendance/missingpages.php");
@@ -442,39 +448,46 @@ class block_uai extends block_base {
 	    	$root["string"] = get_string("deportes", "block_uai");
 	    	$root["icon"] =   "deportes.ico";
 	    	
-	    		$root["attendance"] = array();
-	    		$root["attendance"]["string"] = get_string("attendance", "block_uai");
-	    		$root["attendance"]["url"] = new moodle_url("/local/deportes/attendance.php");
-	    		$root["attendance"]["icon"] = "i/completion-auto-enabled";
+	    	if($CFG->deportes_courseid != 0) {
+		    	$root["page"] = array();
+		    	$root["page"]["string"] = get_string("page", "block_uai");
+		    	$root["page"]["url"] = new moodle_url("/course/view.php", array("id" => $CFG->deportes_courseid));
+		    	$root["page"]["icon"] = "a/view_list_active";
+	    	}
+	    	
+    		$root["attendance"] = array();
+    		$root["attendance"]["string"] = get_string("attendance", "block_uai");
+    		$root["attendance"]["url"] = new moodle_url("/local/deportes/attendance.php");
+    		$root["attendance"]["icon"] = "i/completion-auto-enabled";
+    		
+    		$root["reserve"] = array();
+    		$root["reserve"]["string"] = get_string("reserve", "block_uai");
+    		$root["reserve"]["url"] = new moodle_url("/local/deportes/reserve.php");
+    		$root["reserve"]["icon"] = "t/assignroles";
+    		
+    		$root["schedule"] = array();
+    		$root["schedule"]["string"] = get_string("schedule", "block_uai");
+    		$root["schedule"]["url"] = new moodle_url("/local/deportes/schedule.php");
+    		$root["schedule"]["icon"] =	 "e/table";
+    		
+    		if(has_capability("local/deportes:edit", $context)){
+    		
+	    	/*	$root["modules"] = array();
+	    		$root["modules"]["string"] = get_string("modules", "block_uai");
+	    		$root["modules"]["url"] = new moodle_url("/local/deportes/modules.php");
+	    		$root["modules"]["icon"] =	 "i/calendar";
 	    		
-	    		$root["reserve"] = array();
-	    		$root["reserve"]["string"] = get_string("reserve", "block_uai");
-	    		$root["reserve"]["url"] = new moodle_url("/local/deportes/reserve.php");
-	    		$root["reserve"]["icon"] = "t/assignroles";
+	    		$root["sports"] = array();
+	    		$root["sports"]["string"] = get_string("editsports", "block_uai");
+	    		$root["sports"]["url"] = new moodle_url("/local/deportes/addsports.php");
+	    		$root["sports"]["icon"] =	 "i/edit";
+	    	*/
+	    		$root["scheduleedit"] = array();
+	    		$root["scheduleedit"]["string"] = get_string("editschedule", "block_uai");
+	    		$root["scheduleedit"]["url"] = new moodle_url("/local/deportes/addsportfile.php");
+	    		$root["scheduleedit"]["icon"] =	 "e/table_props";
 	    		
-	    		$root["schedule"] = array();
-	    		$root["schedule"]["string"] = get_string("schedule", "block_uai");
-	    		$root["schedule"]["url"] = new moodle_url("/local/deportes/schedule.php");
-	    		$root["schedule"]["icon"] =	 "e/table";
-	    		
-	    		if(has_capability("local/deportes:edit", $context)){
-	    		
-		    	/*	$root["modules"] = array();
-		    		$root["modules"]["string"] = get_string("modules", "block_uai");
-		    		$root["modules"]["url"] = new moodle_url("/local/deportes/modules.php");
-		    		$root["modules"]["icon"] =	 "i/calendar";
-		    		
-		    		$root["sports"] = array();
-		    		$root["sports"]["string"] = get_string("editsports", "block_uai");
-		    		$root["sports"]["url"] = new moodle_url("/local/deportes/addsports.php");
-		    		$root["sports"]["icon"] =	 "i/edit";
-		    	*/
-		    		$root["scheduleedit"] = array();
-		    		$root["scheduleedit"]["string"] = get_string("editschedule", "block_uai");
-		    		$root["scheduleedit"]["url"] = new moodle_url("/local/deportes/sportsmodulematch.php");
-		    		$root["scheduleedit"]["icon"] =	 "e/table_props";
-		    		
-	    		}
+    		}
     	}else{
     		return false;
     	}
