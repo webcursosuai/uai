@@ -602,46 +602,46 @@ class block_uai extends block_base {
     						}
     							
     						$usersettingshtml = html_writer::tag("ul", $usersettingshtml, array(
-    								"class" => "nav nav-list collapse",
+    								"class" => "collapse",
     								"id" => "us".$id,
-    								"style" => "padding-left: 20px;"
+    						    "style" => "list-style-type: none; width:100%;"
     						));
     						$usersettingsspan = $OUTPUT->pix_icon($value["icon"], "")." ".html_writer::tag("span", $value["string"]);
     						$usersettingsspan = html_writer::tag("a", $usersettingsspan, array("href" => "", "style" => "text-decoration: none !important; pointer-events: none;"));
     						$usersettingsspan = html_writer::tag("li", $usersettingsspan, array(
     								"data-toggle" => "collapse",
     								"data-target" => "#us".$id,
-    								"style" => "cursor: pointer;"
+    								"style" => "list-style-type: none; cursor: pointer; width:100%;"
     						));
     							
-    						$usersettingshtml = html_writer::tag("li", $usersettingshtml);
+    						$usersettingshtml = html_writer::tag("ul", $usersettingshtml);
     						$elementhtml .= $usersettingsspan.$usersettingshtml;
     					}
     				}
     				
     				$settingshtml = html_writer::tag("ul", $settingshtml, array(
-    						"class" => "nav nav-list collapse", 
+    						"class" => "collapse", 
     						"id" => "s".$id,
-    						"style" => "padding-left: 20px;"
+    				        "style" => "list-style-type: none; width:100%;"
     				));
     				$settingsspan = $OUTPUT->pix_icon($values["icon"], "")." ".html_writer::tag("span", $values["string"]);
     				$settingsspan = html_writer::tag("a", $settingsspan, array("href" => "", "style" => "text-decoration: none !important; pointer-events: none;"));
     				$settingsspan = html_writer::tag("li", $settingsspan, array(
     						"data-toggle" => "collapse",
     						"data-target" => "#s".$id,
-    						"style" => "cursor: pointer;"
+    						"style" => " cursor: pointer; width:100%;"
     				));
     				
-    				$settingshtml = html_writer::tag("li", $settingshtml);
+    				$settingshtml = html_writer::tag("ul", $settingshtml);
     				$elementhtml .= $settingsspan.$settingshtml;
     			}
     		}
     		
     		// Get all the list components above in one collapsable list delimeter ("ul" tag)
     		$pluginhtml = html_writer::tag("ul", $elementhtml, array(
-    				"class" => "nav nav-list collapse",
+    				"class" => "collapse",
     				"id" => $id,
-    				"style" => "padding-left: 10px;"
+    		    "style" => "list-style-type: none; width:100%;" 
     		));
     		
     		// Then make it part of the plugins list
@@ -654,7 +654,7 @@ class block_uai extends block_base {
     		$pluginspan = html_writer::tag("li", $pluginspan, array(
     				"data-toggle" => "collapse", 
     				"data-target" => "#".$id,
-    				"style" => "cursor: pointer;"
+    				"style" => "list-style-type: none; cursor: pointer; width:100%;"
     		));
     		
     		$pluginhtml = html_writer::tag("li", $pluginhtml);
