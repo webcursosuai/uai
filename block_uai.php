@@ -314,22 +314,34 @@ class block_uai extends block_base {
  			$root["missing"]["icon"] =	 "i/warning";
  		}
  			
- 		if($COURSE->id > 1 && $COURSE->idnumber != NULL){
+ 		if($COURSE->id > 1){
  			if(has_capability("local/paperattendance:print", $context) || has_capability("local/paperattendance:printsecre", $context)){
  				$root["print"] = array();
- 				$root["print"]["string"] = get_string("printpaperattendance", "block_uai");
- 				$root["print"]["url"] =	   new moodle_url("/local/paperattendance/print.php", array("courseid" => $COURSE->id, "categoryid"  => $categoryid));
+ 				if($COURSE->idnumber != NULL){
+     				$root["print"]["string"] = get_string("printpaperattendance", "block_uai");
+     				$root["print"]["url"] =	   new moodle_url("/local/paperattendance/print.php", array("courseid" => $COURSE->id, "categoryid"  => $categoryid));
+ 				}else{
+ 				    $root["print"]["string"] = get_string("notomegacourse", "block_uai");
+ 				}
  				$root["print"]["icon"] =   "e/print";
  			}
  			if(has_capability("local/paperattendance:history", $context)){
  				$root["history"] = array();
- 				$root["history"]["string"] = get_string("historypaperattendance", "block_uai");
- 				$root["history"]["url"] =	 new moodle_url("/local/paperattendance/history.php", array("courseid" => $COURSE->id));
+ 				if($COURSE->idnumber != NULL){
+     				$root["history"]["string"] = get_string("historypaperattendance", "block_uai");
+     				$root["history"]["url"] =	 new moodle_url("/local/paperattendance/history.php", array("courseid" => $COURSE->id));
+ 				}else{
+ 				    $root["history"]["string"] = get_string("notomegacourse", "block_uai");
+ 				}
  				$root["history"]["icon"] =	 "i/grades";
  				
  				$root["discussion"] = array();
- 				$root["discussion"]["string"] = get_string("discussionpaperattendance", "block_uai");
-				$root["discussion"]["url"] =	new moodle_url("/local/paperattendance/discussion.php", array("courseid" => $COURSE->id));
+ 				if($COURSE->idnumber != NULL){
+     				$root["discussion"]["string"] = get_string("discussionpaperattendance", "block_uai");
+    				$root["discussion"]["url"] =	new moodle_url("/local/paperattendance/discussion.php", array("courseid" => $COURSE->id));
+ 				}else{
+ 				    $root["discussion"]["string"] = get_string("notomegacourse", "block_uai");
+ 				}
 				$root["discussion"]["icon"] =	"i/cohort";
 			}
 		}

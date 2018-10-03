@@ -70,7 +70,7 @@ $string["reserve"] = "Reservations";
 $string["editsports"] = "Sports editor";
 $string["editschedule"] = "Schedule editor";
 $string["page"] = "General course";
-
+$string["notomegacourse"] = "No Omega course";
 
 $string["blocknewprintorder"] = "Send new emarking for printing";
 $string["blockmyexams"] = "My emarkings";

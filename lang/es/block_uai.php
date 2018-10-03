@@ -70,6 +70,7 @@ $string["reserve"] = "Reservar";
 $string["editsports"] = "Editor de deporte";
 $string["editschedule"] = "Editor de horario";
 $string["page"] = "Curso general";
+$string["notomegacourse"] = "No es curso Omega";
 
 $string["blocknewprintorder"] = "Enviar emarking a impresión";
 $string["blockmyexams"] = "Mis emarkings";
