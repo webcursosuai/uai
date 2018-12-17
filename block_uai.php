@@ -322,6 +322,7 @@ class block_uai extends block_base {
      				$root["print"]["url"] =	   new moodle_url("/local/paperattendance/print.php", array("courseid" => $COURSE->id, "categoryid"  => $categoryid));
  				}else{
  				    $root["print"]["string"] = get_string("notomegacourse", "block_uai");
+ 				    $root["print"]["url"] = '';
  				}
  				$root["print"]["icon"] =   "e/print";
  			}
@@ -332,6 +333,7 @@ class block_uai extends block_base {
      				$root["history"]["url"] =	 new moodle_url("/local/paperattendance/history.php", array("courseid" => $COURSE->id));
  				}else{
  				    $root["history"]["string"] = get_string("notomegacourse", "block_uai");
+ 				    $root["history"]["url"] = '';
  				}
  				$root["history"]["icon"] =	 "i/grades";
  				
@@ -341,6 +343,7 @@ class block_uai extends block_base {
     				$root["discussion"]["url"] =	new moodle_url("/local/paperattendance/discussion.php", array("courseid" => $COURSE->id));
  				}else{
  				    $root["discussion"]["string"] = get_string("notomegacourse", "block_uai");
+ 				    $root["discussion"]["url"] = '';
  				}
 				$root["discussion"]["icon"] =	"i/cohort";
 			}
