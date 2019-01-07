@@ -347,6 +347,13 @@ class block_uai extends block_base {
  				}
 				$root["discussion"]["icon"] =	"i/cohort";
 			}
+			if(has_capability("local/paperattendance:takeattendance", $context)){
+			    $root["takeattendance"] = array();
+			    $root["takeattendance"]["string"] = get_string("takeattendance", "block_uai");
+			    $root["takeattendance"]["url"] =	 new moodle_url("/local/paperattendance/attendance.php", array("courseid" => $COURSE->id));
+			    $root["takeattendance"]["icon"] =	 "f/env";
+			    
+			}
 		}
  		
  		if(empty($root)) {
