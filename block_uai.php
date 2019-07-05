@@ -267,6 +267,7 @@ class block_uai extends block_base {
         
         $categoryid = optional_param("categoryid", $CFG->block_uai_categoryid, PARAM_INT);
         $context = $PAGE->context;
+        $context_system = context_system::instance();
         
         //new feature for the secretary to see printsearch and upload from everywhere
         $sqlcategory = "SELECT cc.*
@@ -286,7 +287,7 @@ class block_uai extends block_base {
         
         $root = array();
         
-        if(has_capability("local/paperattendance:upload", $context) || $is_secretary){
+        if(has_capability("local/paperattendance:upload", $context) || $is_secretary || has_capability("local/paperattendance:upload", $context_system)){
             $root["upload"] = array();
             $root["upload"]["string"] = get_string("uploadpaperattendance", "block_uai");
             $root["upload"]["url"] = 	new moodle_url("/local/paperattendance/upload.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
@@ -300,14 +301,14 @@ class block_uai extends block_base {
             $root["modules"]["icon"] =	 "i/calendar";
         }
         
-        if(has_capability("local/paperattendance:printsearch", $context) || $is_secretary){
+        if(has_capability("local/paperattendance:printsearch", $context) || $is_secretary || has_capability("local/paperattendance:printsearch", $context_system)){
             $root["search"] = array();
             $root["search"]["string"] = get_string("printsearchpaperattendance", "block_uai");
             $root["search"]["url"] =	new moodle_url("/local/paperattendance/printsearch.php", array("courseid" => $COURSE->id,"categoryid" => $categoryid));
             $root["search"]["icon"] =	"t/print";
         }
         
-        if(has_capability("local/paperattendance:missingpages", $context) || $is_secretary){
+        if(has_capability("local/paperattendance:missingpages", $context) || $is_secretary || has_capability("local/paperattendance:missingpages", $context_system)){
             $root["missing"] = array();
             $root["missing"]["string"] = get_string("missingpagespaperattendance", "block_uai");
             $root["missing"]["url"] =	 new moodle_url("/local/paperattendance/missingpages.php");
